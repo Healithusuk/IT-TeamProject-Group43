@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Register</title>
+        <!-- Use Bootstrap -->
+        <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        {% block extra_css %}
+            <link rel="stylesheet" href="{% static 'css/register.css' %}" type="text/css">
+        {% endblock %}
+    </head>
+    <body>
+        {% block content %}
+            <div class="container login-main">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card card-frosted">
+                            <div class="card-header bg-success text-white text-center">
+                                <h4>User Register</h4>
+                            </div>
+                            <div class="card-body">
+                                <form method="post" action="{% url 'register' %}" class="mt-4">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label text-light">Username <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control text-center" id="username" name="username" placeholder="Max 25 characters" maxlength="25" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label text-light">Email <span class="text-danger">*</span></label>
+                                        <input type="email" class="form-control text-center" id="email" name="email" placeholder="Email Address" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="first_name" class="form-label text-light">FirstName</label>
+                                        <input type="text" class="form-control text-center" id="first_name" name="first_name" placeholder="FirstName">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="last_name" class="form-label text-light">LastName</label>
+                                        <input type="text" class="form-control text-center" id="last_name" name="last_name" placeholder="LastName">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password1" class="form-label text-light">Password <span class="text-danger">*</span></label>
+                                        <input type="password" class="form-control text-center" id="password1" name="password1" placeholder="Password" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password2" class="form-label text-light">Confirm Password <span class="text-danger">*</span></label>
+                                        <input type="password" class="form-control text-center mb-3" id="password2" name="password2" placeholder="Confirm Password" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-outline-success w-50 d-block mx-auto mb-3">Register</button>
+                                    <div class="card-footer text-center">
+                                        <a href="{% url 'login' %}" class="text-decoration-none text-light">Already have an account?</a>
+                                    </div>
+                                    <span class="text-danger">* is required</span>
+                                </form>
+                                {% if messages %}
+                                    <div class="alert alert-danger mt-3" role="alert">
+                                        {% for message in messages %}
+                                            {{ message }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        {% endblock %}
+        <!-- Use Bootstrap -->
+        <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        {% block extra_js %}
+            <script src="{% static 'js/register.js' %}"></script>
+        {% endblock %}
+    </body>
+</html>

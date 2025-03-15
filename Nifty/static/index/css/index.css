@@ -1,0 +1,276 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+.titleImage_container{
+  width: 100%;
+  height: 50%;
+  padding-left: 0;
+  padding-right: 0;
+  position: relative;
+}
+.titleImage_container img{
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+}
+/* 搜索框绝对定位 */
+.search-box {
+  position: absolute;
+  top: 45%;           /* 调整距离顶部的距离 */
+  left: 30%;           /* 水平居中 */
+  transform: translateX(-50%);
+  z-index: 10;         /* 确保搜索框在图片之上 */
+  width: 80%;          /* 根据需要调整宽度 */
+  max-width: 500px;
+}
+/* 搜索框内表单样式 */
+.search-box form {
+  display: flex;
+  padding: 10px;
+  border-radius: 10px;
+}
+.search-input {
+  flex: 1;
+  border: none;
+  border-radius: 10px;
+  padding: 8px;
+  font-size: 16px;
+}
+.search-input:focus {
+  outline: none;
+}
+.search-btn {
+  background-color: #0060c7ce;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 10px;
+  margin-left: 10px;
+}
+.search-btn:hover {
+  background-color: #3e8000;
+}
+.login-register {
+  position: absolute;
+  top: 25%;           /* 调整距离顶部的距离 */
+  left: 70%;           /* 水平居中 */
+  transform: translateX(-50%);
+  z-index: 10;         /* 确保搜索框在图片之上 */
+  width: 300px;          /* 根据需要调整宽度 */
+  max-width: 500px;
+}
+.auth-tabs a {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 30px;
+  color: #ffffff;
+  margin-bottom: 10px;
+  pointer-events: none;
+}
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* 根据需要调整间隔 */
+  max-width: 300px;
+}
+.auth-separator {
+  margin: 0 10px;
+  color:#ffffff;  /* 确保颜色与周围文本一致 */
+}
+input {
+  text-align: center;
+}
+.login-register-notice{
+  position: absolute;
+  top: 40%;           /* 调整距离顶部的距离 */
+  left: 70%;           /* 水平居中 */
+  transform: translateX(-50%);
+  z-index: 10;         /* 确保搜索框在图片之上 */
+  width: 300px;          /* 根据需要调整宽度 */
+  max-width: 500px;
+}
+.login-register-notice p{
+  color:#ffffff;
+  font-size: 42px;
+  margin-right: 50px;
+}
+.collection-record {
+  height: auto;
+  font-size: 40px;
+  color: #e6a800;
+  background-color: rgba(0, 0, 0, 1); /* 修改为半透明 */
+}
+.ollection-record-title{
+
+}
+.movie-show {
+  background: linear-gradient(135deg, #EAD6EE 0%, #a0c0bd 100%);
+  height: 750px;
+  padding-top: 50px;
+}
+.movie-show h1 {
+  font-family: 'Font Awesome', sans-serif; /* 替换为你想要的字体 */
+  font-size: 36px; /* 你可以设置任意大小 */
+  color: rgb(0, 162, 255); /* 设置颜色 */
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+.content-parts {
+  width: 50%;   /* 限制宽度为 50% */
+  margin-left: 300px;  /* 靠左对齐 */
+  margin-right: auto;
+  margin-bottom: 50px;
+}
+.movie-poster {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+.movie-card .card  {
+  height: 120px;
+  width: 100px; /* 你想要的固定宽度 */
+  margin-bottom: 100px;  /* 调整底部间距 */
+}
+.scrollable-comments {
+  margin-top: 22px;
+  max-height: 438px;  /* 固定高度，根据需要调整 */
+  overflow-y: auto;   /* 超出高度后出现垂直滚动条 */
+  border-radius: 10px;
+  /* Firefox: 默认隐藏滚动条 */
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+/* Chrome, Safari, Edge: 隐藏滚动条 */
+.scrollable-comments::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollable-comments::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 10px;
+}
+/* 鼠标悬停时显示滚动条 */
+/* Firefox */
+.scrollable-comments:hover {
+  scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
+}
+/* Chrome, Safari, Edge */
+.scrollable-comments:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.movie-part {
+  margin-bottom: 60px !important;
+}
+.movie-title{
+  font-size: 12px;
+  margin-top: -10px;
+  margin-bottom: -150px;
+  white-space: nowrap;       /* 强制文本在同一行显示 */
+  overflow: hidden;          /* 超出部分隐藏 */
+  text-overflow: ellipsis;   /* 使用省略号表示被截断的文本 */
+  /* 根据需要设置其他间距 */
+}
+.star-rating {
+  margin-bottom: 0px;
+  margin-top: 0;
+}
+.card-title-artwork {
+  font-size: 12px;
+}
+.comments-card {
+  margin-left: 30px;
+  background-color: #eeeeee79;
+  border-radius: 10px;
+}
+.series-show {
+  background-color: #161616d2; /* 或 gray */
+  color: #ecd4b7;
+  height: 650px;
+  padding-top: 50px;
+}
+.series-show h1 {
+  font-weight: bold;
+  font-family: 'Font Awesome', sans-serif; /* 替换为你想要的字体 */
+  font-size: 40px;
+}
+.vertical-divider {
+  width: 1px;               /* 分割线宽度 */
+  background-color: #0374a133;   /* 分割线颜色 */
+  /* 让分割线的高度与左右容器相同 */
+  height: auto;             /* 或者设置为一个具体的高度 */
+  border-radius: 10px;
+}
+.books-show {
+  background: linear-gradient(135deg, #ced69d 0%, #c2a0a1 100%);
+  color: #4b1702;
+  height: 650px;
+  padding-top: 50px;
+}
+.books-show h1 {
+  font-weight: bold;
+  font-family: 'Font Awesome', sans-serif; /* 替换为你想要的字体 */
+  font-size: 44px;
+}
+.index-username-show {
+  display: block;
+  width: 18ch;  
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 55px;
+  color: #ff5e2c;
+}
+.floating-alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1050;
+  /* 根据需要调整宽度和其它样式 */
+}
+.review-card {
+  cursor: pointer;
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(0px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 如果只想给标题添加动画，可以单独设置 */
+.collection-record-title {
+  animation: fadeInUp 2s ease forwards;
+}
+
+/* 卡片初始状态：透明且向下偏移 */
+.card {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.7s ease-out;
+}
+
+/* 激活后状态：完全显示且回到原位 */
+.card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+#backToTop {
+  position: fixed;
+  bottom: 298px; /* 距离底部20px */
+  right: 20px;  /* 距离右侧20px */
+  display: none; /* 初始隐藏 */
+  z-index: 1000; /* 确保覆盖其它内容 */
+  height: 50px;
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% block title %}Nifty-Profile{% endblock %}
+        <link rel="icon" href="{% static 'index/images/logo.png' %}" type="image/x-icon">
+        <!-- Use Bootstrap -->
+        <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+        <!-- Use Custom css style -->
+        {% block extra_css %}
+          <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+          <link rel="stylesheet" href="{% static 'css/profile.css' %}" type="text/css">
+          <link rel="stylesheet" href="{% static 'index/css/star-rating.min.css' %}" media="all" type="text/css"/>
+          <link rel="stylesheet" href="{% static 'index/themes/krajee-fa/theme.css' %}" media="all" type="text/css"/>
+          <link rel="stylesheet" href="{% static 'index/themes/krajee-svg/theme.css' %}" media="all" type="text/css"/>
+          <link rel="stylesheet" href="{% static 'index/themes/krajee-uni/theme.css' %}" media="all" type="text/css"/>
+        {% endblock %}
+    </head>
+    <body>
+      {% block content %}
+
+        
+        <!-- 上部用户信息栏 -->
+        <div class="container-fluid border-bottom py-3 user-info-offset">
+            <div class="container">
+                <!-- 第一部分：用户扩展信息独占一行 -->
+                <div class="row">
+                    <div class="col-12 text-end user-info-extra">
+                        {% if is_followed %}
+                            <button id="follow-btn" class="btn btn-success me-4" onclick="followUser({{ profile_user.pk }})">Following</button>
+                        {% else %}
+                            <button id="follow-btn" class="btn btn-outline-primary me-4" onclick="followUser({{ profile_user.pk }})">Follow</button>
+                        {% endif %}
+                        
+                        <a href="{% url 'follow_detail' profile_user.pk %}" class="text-decoration-none">
+                            <span id="following-count" class="me-4"><strong>{{ user_following_num }}</strong> Following</span>
+                            <span id="follower-count" class="me-4"><strong>{{user_follower_num}}</strong> Followers</span>
+                        </a>
+                        <span class="fw-bold">UID: {{ profile_user.pk }}</span>
+                    </div>
+                </div>
+                <!-- 第二部分：用户基本信息和 Bio 卡片并排排列 -->
+                <div class="row align-items-center mt-3">
+                    <!-- 用户基本信息 -->
+                    <div class="{% if profile_user.username|length > 15 %}col-md-6{% else %}col-md-5{% endif %} d-flex align-items-center user-info">
+                        <img class="profile-rounded-circle" src="{{ profile_user.avatar.url }}" alt="Avatar" width="150" height="150">
+                        <div class="ms-4 name-show">
+                            <h2 class="fw-bold mb-4">{{ profile_user.username }}</h2>
+                            <p class="mb-2 d-block">{{ profile_user.email }}</p>
+                            <p>Joined {{ profile_user.date_joined|date:"F j Y" }}</p>
+                        </div>
+                    </div>
+                    <!-- Bio 卡片 -->
+                    <div class="col-md-6 bio-card-section">
+                        <div class="card bio-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Bio</h5>
+                                <p class="card-text">{{ profile_user.bio }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+          
+        
+        <div class="container mt-4 mb-5">
+            <div class="row">
+              <!-- 左侧导航 -->
+              <div class="col-md-3 mb-4">
+                <div class="list-group" id="list-tab" role="tablist">
+                  <a class="list-group-item list-group-item-action active" id="list-detail-list" data-bs-toggle="list" href="#list-detail" role="tab" aria-controls="detail">Detail</a>
+                  <a class="list-group-item list-group-item-action" id="list-favorites-list" data-bs-toggle="list" href="#list-favorites" role="tab" aria-controls="favorites">Favorites</a>
+                  <a class="list-group-item list-group-item-action" id="list-reviews-list" data-bs-toggle="list" href="#list-reviews" role="tab" aria-controls="reviews">Reviews</a>
+                </div>
+              </div>
+          
+              <!-- 右侧主要内容 -->
+              <div class="col-md-9">
+                <div class="tab-content" id="nav-tabContent">
+                  <!-- Favorites 内容 -->
+                  <div class="tab-pane fade show active" id="list-detail" role="tabpanel" aria-labelledby="list-detail-list">
+                    <!-- 在此填充 Favorites 页面内容 -->
+                    <div class="card detail-page">
+                      <div class="card-body">
+                        <h1 class="card-title mb-3 fw-bold">Detail</h1>
+                            <div class="all-details">
+                                <!-- 用户名 -->
+                                <div class="mb-3 row">
+                                <label for="username" class="col-sm-3 col-form-label">User name:</label>
+                                <div class="col-sm-9">
+                                    <p class="form-control-plaintext">{{ profile_user.username }}</p>
+                                </div>
+                                </div>
+
+                                <!-- 用户名 -->
+                                <div class="mb-3 row">
+                                    <label for="lastname" class="col-sm-3 col-form-label">Last name:</label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-plaintext">{{ profile_user.last_name|default:"None" }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- 用户名 -->
+                                <div class="mb-3 row">
+                                    <label for="firstname" class="col-sm-3 col-form-label">First name:</label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-plaintext">{{ profile_user.first_name|default:"None" }}</p>
+                                    </div>
+                                </div>
+                            
+                                <!-- 生日 -->
+                                <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Birth date:</label>
+                                <div class="col-sm-9">
+                                    <p class="form-control-plaintext">{{ profile_user.birthday|default:"None" }}</p>
+                                </div>
+                                </div>
+
+                                <!-- 用户名 -->
+                                <div class="mb-3 row">
+                                    <label for="email" class="col-sm-3 col-form-label">Email:</label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-plaintext">{{ profile_user.email|default:"None" }}</p>
+                                    </div>
+                                </div>
+                            
+                                <!-- 简介 -->
+                                <div class="mb-3 row">
+                                <label class="col-sm-3 col-form-label">Bio:</label>
+                                <div class="col-sm-9 bio-text">
+                                    <p class="form-control-plaintext">{{ profile_user.bio }}</p>
+                                </div>
+                                </div>
+
+                                <!-- 简介 -->
+                                <div class="mb-3 row">
+                                    <label class="col-sm-3 col-form-label">Last login date:</label>
+                                    <div class="col-sm-9 bio-text">
+                                        <p class="form-control-plaintext">{{ profile_user.last_login }}</p>
+                                    </div>
+                                    </div>
+                            </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Favorites 内容 -->
+                  <div class="tab-pane fade" id="list-favorites" role="tabpanel" aria-labelledby="list-favorites-list">
+                    <!-- 在此填充 Favorites 页面内容 -->
+                    <div class="card favorites-page">
+                      <div class="card-body">
+                        <h1 class="card-title mb-3 fw-bold">Favorites</h1>
+                        <!-- 搜索框 -->
+                        <div class="mb-3 input-group flex-nowrap input-group-custom">
+                            <span class="input-group-text" id="addon-wrapping">🔎</span>
+                            <input type="text" id="searchInput-favorite" class="form-control text-center" placeholder="Movie, Book, TvShow">
+                        </div>
+                        {% for category, items in favorites.items %}
+                            <h2 class="text-primary">
+                                {{ category|title }} (<span id="count-{{ category }}">{{ items|length }}</span>)
+                            </h2>
+                            <div class="favorites-category d-flex flex-wrap text-center">
+                                {% if items %}
+                                {% for item in items %}
+                                    {% if category == "book" %}
+                                        <a href="{% url 'bookdetail' item.self.pk %}" class="text-decoration-none text-reset favorite-link">
+                                    {% elif category == "movie" %}
+                                        <a href="{% url 'moviedetail' item.self.pk %}" class="text-decoration-none text-reset favorite-link">
+                                    {% elif category == "tv" %}
+                                        <a href="{% url 'tvshowdetail' item.self.pk %}" class="text-decoration-none text-reset favorite-link">
+                                    {% endif %}
+                                            <div class="favorite-item me-3 mb-3 card position-relative" data-category="{{ category }}" data-item-self="{{ item.self.pk }}">
+                                            {% if item.cover %}
+                                                <img class="favorite-img" src="{{ item.cover }}" alt="{{ item.name }}" class="card-img-top favorite-img">
+                                            {% else %}
+                                                <div class="card-img-top text-center p-3">No Image</div>
+                                            {% endif %}
+                                            <div class="card-body">
+                                                <p class="card-text text-ellipsis">{{ item.name }}</p>
+                                            </div>
+                                            </div>
+                                        </a>
+                                {% endfor %}
+                                {% else %}
+                                <p>No Favorite In This Category</p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Reviews 内容 -->
+                  <div class="tab-pane fade" id="list-reviews" role="tabpanel" aria-labelledby="list-reviews-list">
+                    <!-- 在此填充 Reviews 页面内容 -->
+                    <div class="card reviews-page">
+                      <div class="card-body">
+                        <h1 class="card-title mb-3 fw-bold">Reviews</h1>
+                        <!-- 搜索框 -->
+                        <div class="mb-3 input-group flex-nowrap input-group-custom">
+                            <span class="input-group-text" id="addon-wrapping">🔎</span>
+                            <input type="text" id="searchInput-reviews" class="form-control text-center" placeholder="Search Any Type Name Reviewtext Date">
+                        </div>
+                        {% if reviews %}
+                            <h5>Total: <span id="review-count">{{ reviews|length }}</span> reviews</h5>
+                            <div class="scrollable-reviews">
+                                {% for review in reviews %}
+                                    {% with formatted_date=review.created_at|date:"F j Y" %}
+                                    {% if review.review_content_type.artwork_type == "book" %}
+                                        <a href="{% url 'bookdetail' review.review_content_id %}" class="text-decoration-none text-reset favorite-link">
+                                    {% elif review.review_content_type.artwork_type == "movie" %}
+                                        <a href="{% url 'moviedetail' review.review_content_id %}" class="text-decoration-none text-reset favorite-link">
+                                    {% elif review.review_content_type.artwork_type == "tv" %}
+                                        <a href="{% url 'tvshowdetail' review.review_content_id %}" class="text-decoration-none text-reset favorite-link">
+                                    {% endif %}
+                                        <div class="card mb-3 review-card position-relative" id="review-{{ review.pk }}" data-review-id="{{ review.pk }}">
+                                        <div class="row">
+                                            <!-- 左侧海报区域 -->
+                                            <div class="col-md-3">
+                                            {% if review.review_content_cover_image %}
+                                                <img src="{{ review.review_content_cover_image.url }}" class="img-fluid rounded-start fixed-poster" alt="{{ review.review_content_name }}">
+                                            {% else %}
+                                                <div class="card-img-top text-center p-3">No Image</div>
+                                            {% endif %}
+                                            </div>
+                                            <!-- 右侧内容区域 -->
+                                            <div class="col-md-8">
+                                            <div class="card-body d-flex flex-column">
+                                                <h5 class="card-title fw-bold text-success">
+                                                {{ review.review_content_type.artwork_type|upper }} | {{ review.review_content_name|truncatechars:35 }}
+                                                </h5>
+                                                <p class="card-text truncate-3">{{ review.review_text }}</p>
+                                                <div class="mt-auto">
+                                                <p class="card-text text-end"><small class="text-muted">Posted at {{ formatted_date }}</small></p>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </a>
+                                    {% endwith %}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                        <p>You don't have a review</p>
+                        {% endif %}
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          
+            </div>
+        </div>
+        
+      {% endblock %}
+      
+        
+      <!-- Use Bootstrap -->
+      <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+      <!-- Use Custom js -->
+      {% block extra_js %}
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="{% static 'js/profile.js' %}"></script>
+        <script src="{% static 'index/js/star-rating.min.js' %}"></script>
+        <script src="{% static 'index/themes/krajee-fa/theme.js' %}" type="text/javascript"></script>
+        <script src="{% static 'index/themes/krajee-svg/theme.js' %}" type="text/javascript"></script>
+        <script src="{% static 'index/themes/krajee-gly/theme.js' %}" type="text/javascript"></script>
+        <script src="{% static 'index/themes/krajee-uni/theme.js' %}" type="text/javascript"></script>
+      {% endblock %}
+    </body>
+</html>
+

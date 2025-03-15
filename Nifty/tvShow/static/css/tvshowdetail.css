@@ -1,0 +1,139 @@
+.title-main{
+    margin-top: 70px;
+    background-color:rgb(36, 17, 124);
+}
+.title-words{
+    font-size: 40px;
+    color: #ff9100;
+    font-family: 'Rakkas', cursive;
+}
+.book-detail-page{
+    min-height: 1200px;
+}
+.progress {
+    background-color: transparent;
+}
+.progress-bar{
+    background-color: #FFD596;
+}
+.rating-distribution {
+    width: 180px !important;
+    background-color: transparent;
+    margin: 0 auto;
+    color: rgba(124, 124, 124, 0.911);
+}
+.grade-show{
+    color: #000000;
+}
+.rounded-circle{
+    width: 40px; 
+    height: 40px; 
+    object-fit: cover;
+}
+.mark-detail{
+    background-color: rgba(201, 255, 196, 0.226);
+    border-radius: 25px;
+}
+.scrollable-comments {
+    max-height: 1200px; /* 设定最大高度，根据需要调整 */
+    overflow-y: auto;  /* 超出部分在垂直方向显示滚动条 */
+    border-radius: 10px;
+    /* Firefox: 默认隐藏滚动条 */
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+/* Chrome, Safari, Edge: 隐藏滚动条 */
+.scrollable-comments::-webkit-scrollbar {
+    width: 10px;
+}
+.scrollable-comments::-webkit-scrollbar-thumb {
+background-color: transparent;
+border-radius: 10px;
+}
+/* 鼠标悬停时显示滚动条 */
+/* Firefox */
+.scrollable-comments:hover {
+scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
+}
+/* Chrome, Safari, Edge */
+.scrollable-comments:hover::-webkit-scrollbar-thumb {
+background-color: rgba(0, 0, 0, 0.5);
+}
+.resource{
+    margin-left: 100px;
+}
+.resource-icon{
+    height:40px; 
+}
+.comments-card{
+    background-color: rgba(255, 244, 196, 0.253);
+}
+#backToTop {
+    position: fixed;
+    bottom: 298px; /* 距离底部20px */
+    right: 20px;  /* 距离右侧20px */
+    display: none; /* 初始隐藏 */
+    z-index: 1000; /* 确保覆盖其它内容 */
+    height: 50px;
+}
+.recommendation-card{
+    width: 133px;
+    height: 250px;
+    margin-bottom: 50px;
+    min-width: 135px;
+}
+.card-img-top{
+    width: 133px;
+    height:200px;
+    object-fit: fill;
+}
+.recommendation-card-title{
+    font-size: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.reviews-section{
+    margin-top: 20px;
+}
+.related-books {
+    overflow-x: auto;        /* 允许横向滚动 */
+    
+    /* Firefox: 隐藏滚动条 */
+    scrollbar-width: none;   /* 隐藏滚动条 */
+    
+    /* IE 10+ */
+    -ms-overflow-style: none;
+  }
+  
+  /* Chrome、Safari 等 WebKit 浏览器 */
+  .related-books::-webkit-scrollbar {
+    display: none;           /* 默认隐藏 */
+  }
+  
+  /* 当鼠标悬停时显示滚动条 */
+  /* Firefox */
+  .related-books:hover {
+    scrollbar-width: thin;   /* 显示细滚动条 */
+  }
+  
+  /* WebKit 浏览器：鼠标悬停时显示滚动条 */
+  .related-books:hover::-webkit-scrollbar {
+    display: block; 
+    height: 8px;             /* 设置滚动条高度 */
+  }
+  
+  .related-books:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);  /* 滚动条滑块颜色 */
+    border-radius: 4px;
+  }
+  .star-rating{
+    margin-left: 30px;
+  }
+  .review-card {
+    cursor: pointer;
+  }
+  .user-name{
+    margin-top: 15px;
+  }
+  

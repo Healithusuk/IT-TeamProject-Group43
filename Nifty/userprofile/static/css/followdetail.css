@@ -1,0 +1,37 @@
+.main-page{
+    margin-top: 50px;
+    height: 1000px;
+}
+.user-card {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    background-color: #d4ae766e;
+  }
+  .user-card img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  .section-title {
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+.title-main{
+    margin-top: 70px;
+    background-color: rgb(102, 187, 173);
+}
+.title-words{
+    font-size: 40px;
+    font-family: 'Rakkas', cursive;
+}
+.scrollable-users {
+    max-height: 1000px; /* 根据需要调整高度 */
+    overflow-y: auto;  /* 超出部分自动显示垂直滚动条 */
+    overflow-x: hidden; /* 隐藏横向滚动条 */
+  }

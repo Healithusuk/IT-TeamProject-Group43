@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login</title>
+        <!-- Use Bootstrap -->
+        <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        {% block extra_css %}
+            <link rel="stylesheet" href="{% static 'css/login.css' %}" type="text/css">
+        {% endblock %}
+    </head>
+    <body>
+        {% block content %}
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card card-frosted">
+                            <div class="card-header bg-success text-white text-center">
+                                <h4>Login</h4>
+                            </div>
+                            <div class="card-body">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label text-light">Username</label>
+                                        <input type="text" class="form-control text-center" id="username" name="username" placeholder="username" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="password" class="form-label text-light">Password</label>
+                                        <input type="password" class="form-control text-center" id="password" name="password" placeholder="password" required>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-outline-success">Login</button>
+                                    </div>
+                                </form>
+                                {% if messages %}
+                                    <div class="alert alert-danger mt-3" role="alert">
+                                        {% for message in messages %}
+                                            {{ message }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="{% url 'register' %}" class="text-decoration-none text-light">Don't have an account?</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+            <!-- Use Bootstrap -->
+            <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        {% block extra_js %}
+            <script src="{% static 'js/login.js' %}"></script>
+        {% endblock %}
+    </body>
+</html>

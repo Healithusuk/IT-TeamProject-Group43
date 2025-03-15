@@ -1,0 +1,289 @@
+{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% block title %}Nifty-TvShow{% endblock %}
+        <link rel="icon" href="{% static 'index/images/logo.png' %}" type="image/x-icon">
+        <!-- Use Bootstrap -->
+        <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+        <!-- Use Custom css style -->
+        {% block extra_css %}
+            <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Rakkas&display=swap" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600&display=swap" rel="stylesheet">
+            <link rel="stylesheet" href="{% static '/css/tvshowdetail.css' %}" type="text/css">
+            <link rel="stylesheet" href="{% static 'index/css/star-rating.css' %}" media="all" type="text/css"/>
+            <link rel="stylesheet" href="{% static 'index/themes/krajee-fas/theme.css' %}" media="all" type="text/css"/>
+            <link rel="stylesheet" href="{% static 'index/themes/krajee-fa/theme.css' %}" media="all" type="text/css"/>
+            <link rel="stylesheet" href="{% static 'index/themes/krajee-svg/theme.css' %}" media="all" type="text/css"/>
+            <link rel="stylesheet" href="{% static 'index/themes/krajee-uni/theme.css' %}" media="all" type="text/css"/>
+        {% endblock %}
+    </head>
+    <body>
+        {% block content %}
+            <div class="container-fluid title-main mb-5">
+                <div class="container search-counts fw-bold">
+                    <span class="title-words">NIFTY TVSHOW</span>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row book-detail-page">
+                    <!-- 左侧：作品信息 -->
+                    <div class="col-md-8">
+                    <!-- 标题、评分等基本信息 -->
+                    <div class="mb-4">
+                        <h2 class="fw-bold mb-4">{{tvshow.tvshow_name}} ({{ tvshow.tvshow_release_year|date:"Y" }})</h2>
+                        <div class="row">
+                            <!-- 左侧：海报区域 -->
+                            <div class="col-md-2 col-sm-12 mb-4">
+                                {% if tvshow.tvshow_cover_image %}
+                                    <img src="{{tvshow.tvshow_cover_image.url}}" alt="Poster" class="img-fluid rounded">
+                                {% else %}   
+                                    <img src="#" alt="Poster" class="img-fluid rounded"> 
+                                {% endif %}    
+                            </div>
+                            <!-- 右侧：作品信息 -->
+                            <div class="col-md-8 col-sm-12">
+                                <p class="mb-1">
+                                    <span class="text-muted fw-bold">Writer:</span>
+                                    <span class="ms-2">{{ tvshow.tvshow_writer }}</span>
+                                </p>
+                                <p class="mb-1">
+                                    <span class="text-muted fw-bold">Publisher:</span>
+                                    <span class="ms-2">{{ tvshow.tvshow_publisher }}</span>
+                                </p>
+                                <p class="mb-1">
+                                    <span class="text-muted fw-bold">Genre:</span>
+                                    <span class="ms-2">{{ tvshow.tvshow_genre }}</span>
+                                </p>
+                                <p class="mb-1">
+                                    <span class="text-muted fw-bold">Type:</span>
+                                    <span class="ms-2">{{ tvshow.type|capfirst }}</span>
+                                </p>
+                                <p class="mb-1">
+                                    <span class="text-muted fw-bold">Country&Region:</span>
+                                    <span class="ms-2">{{ tvshow.tvshow_country }}</span>
+                                </p>
+                                <p class="mb-1">
+                                    <span class="text-muted fw-bold">Release year:</span>
+                                    <span class="ms-2">{{ tvshow.tvshow_release_year }}</span>
+                                </p>
+                                <p class="mb-1">
+                                    <span class="text-muted fw-bold">IMDb:</span>
+                                    <span class="ms-2">{{ tvshow.tvshow_imdb }}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 简介/内容介绍 -->
+                    <div class="mb-1">
+                        <h2 class="border-start border-5 border-warning ps-3 mb-3 text-success">
+                            Introduction
+                            {%if user.is_authenticated%}
+                                {% if favorited %}
+                                <button id="add-favorite-btn" class="btn btn-outline-success btn-sm ms-3">Added to Favorites❤️</button>
+                                {% else %}
+                                <button id="add-favorite-btn" class="btn btn-outline-primary btn-sm ms-3">Add to Favorites🤍</button>
+                                {% endif %}
+                            {% else %}
+                                <button id="add-favorite-btn" class="btn btn-outline-warning btn-sm ms-3" onclick="window.location.href='{% url 'login' %}?next={{ request.get_full_path }}'">Login to add favorite</button>
+                            {% endif %}
+                        </h2>
+                        <p class="mb-5">{{ tvshow.tvshow_description|default:"No description available" }}</p>
+                    </div>
+                    
+                    <h2 class="border-start border-5 border-warning ps-3 mb-4 text-success">You might also like</h2>
+                    <div class="related-books d-flex overflow-auto">
+                        {% for related in related_tvshows %}
+                            <a href="{% url 'tvshowdetail' related.tvshow_id %}" class="text-decoration-none text-reset">
+                                <div class="card recommendation-card me-2">
+                                {% if related.tvshow_cover_image %}
+                                    <img src="{{ related.tvshow_cover_image.url }}" class="card-img-top" alt="{{ related.tvshow_name }}">
+                                {% else %}
+                                    <div class="card-img-top text-center p-3">No Image</div>
+                                {% endif %}
+                                <div class="card-body">
+                                    <p class="card-title recommendation-card-title">{{ related.tvshow_name }}</p>
+                                </div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+
+                    <!-- 评论区 -->
+                    <div class="reviews-section">
+                        <h2 class="border-start border-5 border-warning ps-3 mb-4 text-success">Reviews</h2>
+                        <!-- 已有评论列表 -->
+                        <div class="mb-3">
+                            <div class="scrollable-comments">
+                                {% for review in reviews_tvshows %}
+                                    <div class="card comments-card mb-2">
+                                        <div class="card-body">
+                                            <div class="d-flex">
+                                                {% if user.is_authenticated %}
+                                                    <a href="{% url 'profile' review.user.id %}" onclick="event.stopPropagation();" class="text-decoration-none text-reset">
+                                                        <div class="d-flex align-items-center">
+                                                            <img src="{{ review.user.avatar.url }}" alt="User Avatar" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                                                            <h5 class="card-title user-name">{{ review.user.username }}</h5>
+                                                            <div class="star-rating">
+                                                                <input id="book-rating-{{ book.book_id }}" type="text" class="rating rating-loading"
+                                                                    value="{{ review.rating|floatformat:1 }}"
+                                                                    data-min="0" data-max="5" data-step="0.1" data-size="xs" 
+                                                                    data-show-caption="false" data-show-clear="false" readonly>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                {% else %}
+                                                    <a href="{% url 'login' %}?next={% url 'profile' review.user.id %}" onclick="event.stopPropagation();" class="text-decoration-none text-reset">
+                                                        <div class="d-flex">
+                                                            <img src="{{ review.user.avatar.url }}" alt="User Avatar" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                                                            <h5 class="card-title user-name">{{ review.user.username }}</h5>
+                                                            <div class="star-rating">
+                                                                <input id="book-rating-{{ book.book_id }}" type="text" class="rating rating-loading"
+                                                                    value="{{ review.rating|floatformat:1 }}"
+                                                                    data-min="0" data-max="5" data-step="0.1" data-size="xs" 
+                                                                    data-show-caption="false" data-show-clear="false" readonly>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                            <p class="card-text mt-3">{{ review.review_text|truncatechars:400 }}</p>
+                                            <p class="text-muted text-end mt-3"><small>{{ review.created_at }}</small></p>
+                                        </div>
+                                    </div>
+                                {% empty %}
+                                  <p>No Reviews</p>
+                                {% endfor %}
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧：评分/观影平台 -->
+                    <div class="col-md-4">
+                        <!-- 评分板块 -->
+                        <div class="border p-3 mb-3 text-center mark-detail">
+                            <div class="container mt-4">
+                                <!-- 第一行：评分数字、评价人数、星星 -->
+                                <div class="d-flex align-items-center justify-content-center mb-3">
+                                  <!-- 评分数字 -->
+                                  <h2 class="fw-bold mb-0 grade-show">{{tvshow.average_rating}}/10.0</h2>
+                                  <div class="flex-column">
+                                    <div class="star-rating">
+                                      <input id="book-rating-{{ tvshow.tvshow_id }}" type="text" class="rating rating-loading"
+                                             value="{{ tvshow.average_rating|floatformat:1 }}"
+                                             data-min="0" data-max="10" data-step="0.1" data-size="xs" data-show-caption="false" data-show-clear="false" readonly>
+                                    </div>
+                                    <span class="text-primary ms-5">{{tvshow.tvshow_rating_count}} Reviews</span>
+                                  </div>
+                                </div>
+                                
+                                <!-- 第二行：星级分布条形图 -->
+                                {% for key, value in tvshow.star_distribution.items %}
+                                    <div class="rating-distribution">
+                                        <!-- 5星 -->
+                                        <div class="d-flex align-items-center">
+                                            <span class="me-2">{{key}}⭐</span>
+                                            <div class="progress flex-grow-1">
+                                            <div class="progress-bar" role="progressbar" style="width: {{value}}%;" aria-valuenow="{{value}}" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <span class="">{{value}}%</span>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <!-- 观影平台链接 -->
+                        <div class="card mb-3">
+                            <div class="card-header fw-bold text-center mb-1">WHERE TO WATCH?</div>
+                            <div class="card-body resource">
+                                <ul class="list-unstyled">
+                                    <li><img class="resource-icon mb-3" src="{% static 'images/prime_video.png' %}" alt="Prime Video"> Prime Video</li>
+                                    <li><img class="resource-icon mb-3" src="{% static 'images/netflix.png' %}" alt="Netflix"> Netflix</li>
+                                    <li><img class="resource-icon" src="{% static 'images/disney.png' %}" alt="Disney+"> Disney+</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- 添加评论表单 -->
+                        <h3 class="fw-bold text-success mb-4">How are you feeling</h3>
+                        <form method="post" action="#">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <div class="star-rating mb-3">
+                                    <label for="reviewText" class="form-label">Your Current Rating:</label>
+                                    <input id="ratingwork" name="ratingwork" value="{{user_current_rating}}" type="text" class="rating" data-min=0 data-max=5 data-step=1 data-size="lg"
+                                            required title="" data-show-caption="true" data-show-clear="false">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="reviewText" class="form-label">Your Review:</label>
+                                <textarea class="form-control" id="reviewText" name="reviewText" rows="6"></textarea>
+                            </div>
+                            {% if user.is_authenticated %}
+                                <div class="d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-outline-success mb-4">Submit Review</button>
+                                </div>
+                                <label for="reviewText" class="form-label">Can change your rating without a review anytime^.^</label>
+                            {% else %}
+                                <div class="d-flex justify-content-center">
+                                    <button type="button" class="btn btn-outline-success" onclick="window.location.href='{% url 'login' %}?next={{ request.get_full_path }}'">
+                                        Login To Review
+                                      </button>
+                                </div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>        
+            </div>
+            <button id="backToTop" class="btn btn-outline-success">Back to Top</button>
+        {% endblock %}
+      
+        
+        <!-- Use Bootstrap -->
+        <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <!-- Use Custom js -->
+        {% block extra_js %}
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="{% static '/js/tvshowdetail.js' %}"></script>
+            <script src="{% static 'index/js/star-rating.js' %}"></script>
+            <script src="{% static 'index/themes/krajee-fas/theme.js' %}" type="text/javascript"></script>
+            <script src="{% static 'index/themes/krajee-fa/theme.js' %}" type="text/javascript"></script>
+            <script src="{% static 'index/themes/krajee-svg/theme.js' %}" type="text/javascript"></script>
+            <script src="{% static 'index/themes/krajee-gly/theme.js' %}" type="text/javascript"></script>
+            <script src="{% static 'index/themes/krajee-uni/theme.js' %}" type="text/javascript"></script>
+        {% endblock %}
+    </body>
+</html>
+
+
+
+<div class="scrollable-comments">
+    {% for review in reviews_tvshows %}
+      <div class="card comments-card mb-2">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            {% if review.user.avatar %}
+              <img src="{{ review.user.avatar.url }}" alt="User Avatar" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
+            {% else %}
+              <img src="{% static 'user/avatar_default.png' %}" alt="User Avatar" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
+            {% endif %}
+            <h5 class="card-title mb-0">{{ review.user.username }}</h5>
+            <!-- 如果需要显示作品类型与名称，可以放在同一行右侧 -->
+            <a class="card-title-artwork mb-0 ms-auto text-decoration-none">
+              {{ review.review_content_type|upper }} | {{ review.review_content_name|truncatechars:35 }}
+            </a>
+          </div>
+          <p class="card-text mt-3">{{ review.review_text|truncatechars:400 }}</p>
+          <p class="text-muted text-end mt-3"><small>{{ review.created_at }}</small></p>
+        </div>
+      </div>
+    {% empty %}
+      <p>No Reviews</p>
+    {% endfor %}
+  </div>
