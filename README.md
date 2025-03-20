@@ -25,7 +25,6 @@ db_details = {
     'HOST': '',
     'PORT': '',
 }
-google_maps_api_key = ''
 email_details={
     'EMAIL_BACKEND': '',
     'EMAIL_HOST': '',
