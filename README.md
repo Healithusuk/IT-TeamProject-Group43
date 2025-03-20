@@ -41,3 +41,17 @@ In order for our project to be executed and graded properly, we'll add secrets.p
 If you are using completely different settings on db, map api, or email, you can remove the call to secrets.py in settings.py and add your own settings.
 
 For example, we once changed the email backend to "django.core.mail.backends.console.EmailBackend" to print the email content directly to console for testing purpose.
+### Database Connection Warning
+
+We use a mysql database on DigitalOcean server. It is somehow **unavailable for on-campus network connection.** The solutions are:
+
+1. Run the proj from outside the campus, or
+2. Use a hot spot if you have to run it on campus
+
+### Access Control
+
+We have set up an access control that prevents users from accessing pages that should only be browsed by users in other groups.
+
+Given this, you need to login as users in different groups to browse all our webpages.
+
+A group of usernames and passwords of test users are provided for you in the text file **"username_passwords_for_test.txt"**
