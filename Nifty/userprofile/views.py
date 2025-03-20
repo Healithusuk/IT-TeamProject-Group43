@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from allModels.models import Movies, Books, TvShows, Reviews, Accounts  # 根据实际 app 名称调整导入路径
+from allModels.models import Movies, Books, TvShows, Reviews, Accounts  
 from .forms import AccountSettingsForm
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
