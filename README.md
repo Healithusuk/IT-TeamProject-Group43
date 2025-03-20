@@ -12,6 +12,10 @@ Packages listed below should also be installed using **pip** before the applicat
 - pillow 11.1.0
 - zxcvbn 4.5.0
 
+# Description
+This is a group project. The project is an informational website. The site has about 3,000+ movies, 2,000+ TV shows and about 1,000+ books. 
+Users can comment and rate the works they are interested in in the website. They can also add favorites to the works they are interested in.
+
 # Secret File
 In our development we use a secret file that is not uploaded to Github. It contains details (like username and password) of how we connect to database server, QQ SMTP server.
 The file is called secrets.py and it looks like this:
