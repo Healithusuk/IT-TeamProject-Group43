@@ -54,4 +54,4 @@ We have two types of accounts, one account is an administrator account with perm
 
 The other account is a regular account that does not have access to the backend administration page.
 
-Regular accounts can register on the site, and we provide an administrator account in the file **username_password_for_admin** for testing.
+Regular accounts can register on the site, and we provide an administrator account in the file "**username_password_for_admin**" for testing.
