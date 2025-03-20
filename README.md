@@ -12,3 +12,6 @@ Packages listed below should also be installed using **pip** before the applicat
 - pillow 11.1.0
 - zxcvbn 4.5.0
 
+Secret File
+In our development we use a secret file that is not uploaded to Gitlab. It contains details (like username and password) of how we connect to database server, google map api server, and smtp server.
+The file is called secrets.py and it looks like this:
