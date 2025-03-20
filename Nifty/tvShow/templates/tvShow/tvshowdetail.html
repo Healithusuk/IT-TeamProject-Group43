@@ -32,13 +32,13 @@
             </div>
             <div class="container">
                 <div class="row book-detail-page">
-                    <!-- 左侧：作品信息 -->
+                    <!-- Left Column: TV show information and reviews -->
                     <div class="col-md-8">
-                    <!-- 标题、评分等基本信息 -->
+                    <!-- Basic information section: Title, rating, and other details -->
                     <div class="mb-4">
                         <h2 class="fw-bold mb-4">{{tvshow.tvshow_name}} ({{ tvshow.tvshow_release_year|date:"Y" }})</h2>
                         <div class="row">
-                            <!-- 左侧：海报区域 -->
+                             <!-- Left side: Poster image area -->
                             <div class="col-md-2 col-sm-12 mb-4">
                                 {% if tvshow.tvshow_cover_image %}
                                     <img src="{{tvshow.tvshow_cover_image.url}}" alt="Poster" class="img-fluid rounded">
@@ -46,7 +46,7 @@
                                     <img src="#" alt="Poster" class="img-fluid rounded"> 
                                 {% endif %}    
                             </div>
-                            <!-- 右侧：作品信息 -->
+                            <!-- Right side: Detailed TV show information -->
                             <div class="col-md-8 col-sm-12">
                                 <p class="mb-1">
                                     <span class="text-muted fw-bold">Writer:</span>
@@ -80,10 +80,11 @@
                         </div>
                     </div>
                     
-                    <!-- 简介/内容介绍 -->
+                    <!-- Introduction/Description section -->
                     <div class="mb-1">
                         <h2 class="border-start border-5 border-warning ps-3 mb-3 text-success">
                             Introduction
+                            <!-- Conditional favorite button display based on user authentication and favorite status -->
                             {%if user.is_authenticated%}
                                 {% if favorited %}
                                 <button id="add-favorite-btn" class="btn btn-outline-success btn-sm ms-3">Added to Favorites❤️</button>
@@ -94,17 +95,21 @@
                                 <button id="add-favorite-btn" class="btn btn-outline-warning btn-sm ms-3" onclick="window.location.href='{% url 'login' %}?next={{ request.get_full_path }}'">Login to add favorite</button>
                             {% endif %}
                         </h2>
+                        <!-- TV show description with a default message if not available -->
                         <p class="mb-5">{{ tvshow.tvshow_description|default:"No description available" }}</p>
                     </div>
                     
+                    <!-- "You might also like" section for related TV shows -->
                     <h2 class="border-start border-5 border-warning ps-3 mb-4 text-success">You might also like</h2>
                     <div class="related-books d-flex overflow-auto">
                         {% for related in related_tvshows %}
                             <a href="{% url 'tvshowdetail' related.tvshow_id %}" class="text-decoration-none text-reset">
                                 <div class="card recommendation-card me-2">
                                 {% if related.tvshow_cover_image %}
+                                    <!-- Display cover image for related TV show -->
                                     <img src="{{ related.tvshow_cover_image.url }}" class="card-img-top" alt="{{ related.tvshow_name }}">
                                 {% else %}
+                                    <!-- Fallback content if image is not available -->
                                     <div class="card-img-top text-center p-3">No Image</div>
                                 {% endif %}
                                 <div class="card-body">
@@ -115,10 +120,10 @@
                         {% endfor %}
                     </div>
 
-                    <!-- 评论区 -->
+                    <!-- Reviews section for TV show reviews -->
                     <div class="reviews-section">
                         <h2 class="border-start border-5 border-warning ps-3 mb-4 text-success">Reviews</h2>
-                        <!-- 已有评论列表 -->
+                        <!-- Container for existing reviews -->
                         <div class="mb-3">
                             <div class="scrollable-comments">
                                 {% for review in reviews_tvshows %}
@@ -126,11 +131,13 @@
                                         <div class="card-body">
                                             <div class="d-flex">
                                                 {% if user.is_authenticated %}
+                                                    <!-- Display reviewer's profile link and avatar if authenticated -->
                                                     <a href="{% url 'profile' review.user.id %}" onclick="event.stopPropagation();" class="text-decoration-none text-reset">
                                                         <div class="d-flex align-items-center">
                                                             <img src="{{ review.user.avatar.url }}" alt="User Avatar" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
                                                             <h5 class="card-title user-name">{{ review.user.username }}</h5>
                                                             <div class="star-rating">
+                                                                <!-- Display review rating (read-only) -->
                                                                 <input id="book-rating-{{ book.book_id }}" type="text" class="rating rating-loading"
                                                                     value="{{ review.rating|floatformat:1 }}"
                                                                     data-min="0" data-max="5" data-step="0.1" data-size="xs" 
@@ -139,6 +146,7 @@
                                                         </div>
                                                     </a>
                                                 {% else %}
+                                                    <!-- If not authenticated, prompt login on click -->
                                                     <a href="{% url 'login' %}?next={% url 'profile' review.user.id %}" onclick="event.stopPropagation();" class="text-decoration-none text-reset">
                                                         <div class="d-flex">
                                                             <img src="{{ review.user.avatar.url }}" alt="User Avatar" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
@@ -153,6 +161,7 @@
                                                     </a>
                                                 {% endif %}
                                             </div>
+                                            <!-- Display review text, truncated if necessary -->
                                             <p class="card-text mt-3">{{ review.review_text|truncatechars:400 }}</p>
                                             <p class="text-muted text-end mt-3"><small>{{ review.created_at }}</small></p>
                                         </div>
@@ -165,14 +174,14 @@
                         </div>
                     </div>
                     
-                    <!-- 右侧：评分/观影平台 -->
+                    <!-- Right Column: TV show rating and platform information -->
                     <div class="col-md-4">
-                        <!-- 评分板块 -->
+                        <!-- Rating section with average rating and rating distribution -->
                         <div class="border p-3 mb-3 text-center mark-detail">
                             <div class="container mt-4">
-                                <!-- 第一行：评分数字、评价人数、星星 -->
+                                <!-- First row: Average rating number, star rating, and review count -->
                                 <div class="d-flex align-items-center justify-content-center mb-3">
-                                  <!-- 评分数字 -->
+                                  <!-- Average rating displayed numerically -->
                                   <h2 class="fw-bold mb-0 grade-show">{{tvshow.average_rating}}/10.0</h2>
                                   <div class="flex-column">
                                     <div class="star-rating">
@@ -180,14 +189,15 @@
                                              value="{{ tvshow.average_rating|floatformat:1 }}"
                                              data-min="0" data-max="10" data-step="0.1" data-size="xs" data-show-caption="false" data-show-clear="false" readonly>
                                     </div>
+                                    <!-- Number of reviews -->
                                     <span class="text-primary ms-5">{{tvshow.tvshow_rating_count}} Reviews</span>
                                   </div>
                                 </div>
                                 
-                                <!-- 第二行：星级分布条形图 -->
+                                <!-- Second row: Star rating distribution bars -->
                                 {% for key, value in tvshow.star_distribution.items %}
                                     <div class="rating-distribution">
-                                        <!-- 5星 -->
+                                        <!-- Each rating row with star label, progress bar, and percentage -->
                                         <div class="d-flex align-items-center">
                                             <span class="me-2">{{key}}⭐</span>
                                             <div class="progress flex-grow-1">
@@ -199,7 +209,7 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <!-- 观影平台链接 -->
+                        <!-- "Where to Watch" section: Links to streaming platforms -->
                         <div class="card mb-3">
                             <div class="card-header fw-bold text-center mb-1">WHERE TO WATCH?</div>
                             <div class="card-body resource">
@@ -210,10 +220,11 @@
                                 </ul>
                             </div>
                         </div>
-                        <!-- 添加评论表单 -->
+                        <!-- Review submission form -->
                         <h3 class="fw-bold text-success mb-4">How are you feeling</h3>
                         <form method="post" action="#">
                             {% csrf_token %}
+                            <!-- Current rating input -->
                             <div class="mb-3">
                                 <div class="star-rating mb-3">
                                     <label for="reviewText" class="form-label">Your Current Rating:</label>
@@ -221,10 +232,12 @@
                                             required title="" data-show-caption="true" data-show-clear="false">
                                 </div>
                             </div>
+                            <!-- Text area for the review -->
                             <div class="mb-3">
                                 <label for="reviewText" class="form-label">Your Review:</label>
                                 <textarea class="form-control" id="reviewText" name="reviewText" rows="6"></textarea>
                             </div>
+                            <!-- Conditional display of the submit button based on authentication -->
                             {% if user.is_authenticated %}
                                 <div class="d-flex justify-content-center">
                                     <button type="submit" class="btn btn-outline-success mb-4">Submit Review</button>
@@ -241,6 +254,7 @@
                     </div>
                 </div>        
             </div>
+            <!-- "Back to Top" button for scrolling back to the top of the page -->
             <button id="backToTop" class="btn btn-outline-success">Back to Top</button>
         {% endblock %}
       
@@ -262,28 +276,3 @@
 </html>
 
 
-
-<div class="scrollable-comments">
-    {% for review in reviews_tvshows %}
-      <div class="card comments-card mb-2">
-        <div class="card-body">
-          <div class="d-flex align-items-center">
-            {% if review.user.avatar %}
-              <img src="{{ review.user.avatar.url }}" alt="User Avatar" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
-            {% else %}
-              <img src="{% static 'user/avatar_default.png' %}" alt="User Avatar" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
-            {% endif %}
-            <h5 class="card-title mb-0">{{ review.user.username }}</h5>
-            <!-- 如果需要显示作品类型与名称，可以放在同一行右侧 -->
-            <a class="card-title-artwork mb-0 ms-auto text-decoration-none">
-              {{ review.review_content_type|upper }} | {{ review.review_content_name|truncatechars:35 }}
-            </a>
-          </div>
-          <p class="card-text mt-3">{{ review.review_text|truncatechars:400 }}</p>
-          <p class="text-muted text-end mt-3"><small>{{ review.created_at }}</small></p>
-        </div>
-      </div>
-    {% empty %}
-      <p>No Reviews</p>
-    {% endfor %}
-  </div>

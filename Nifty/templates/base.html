@@ -13,12 +13,14 @@
         <!-- Use Custom css style -->
         <link href="{% static 'base/css/base.css' %}" rel="stylesheet" type="text/css">
         {% block extra_css %}
-            <!-- 这里会加载页面专用的 CSS -->
+            <!-- Here the page-specific CSS is loaded -->
         {% endblock %}
     </head>
     <body>
+      <!-- Navigation Bar -->
       <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
         <div class="container">
+          <!-- Logo linking to the home page -->
           <a class="nav-link me-3" href="{% url 'index' %}">
             <img id="logo" src="{% static 'base/images/Nifty_Logo_White.png' %}"  class="nav-icon"> 
           </a>
@@ -26,6 +28,7 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Main navigation links -->
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a class="nav-link" aria-current="page" href="{% url 'index' %}">Home</a>
@@ -43,15 +46,21 @@
             <ul class="navbar-nav ms-auto">
                 {% if user.is_authenticated %}
                   <li class="nav-item dropdown">
+                    <!-- User avatar acting as a dropdown toggle -->
                     <a class="nav-link dropdown-toggle" href="#" id="avatarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       <img src="{{user.avatar.url}}" class="rounded-circle" alt="Avatar" width="40" height="40">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="avatarDropdown">
                       <li><p class="text-center">{{user.username}}</p></li>
+                      {% if user.is_superuser %}
+                        <li><a class="dropdown-item text-center" href="{% url 'admin:index' %}">Admin Page</a></li>
+                      {% endif %}
                       <li><a class="dropdown-item text-center" href="{% url 'profile' user.pk %}">My Profile</a></li>
                       <li><a class="dropdown-item text-center" href="{% url 'profile' user.pk %}#settings">Settings</a></li>
+                      <li><a class="dropdown-item text-center" href="{% url 'password_reset' %}">Reset Password</a></li>
                       <li><hr class="dropdown-divider"></li>
                       <li>
+                         <!-- Logout form; submits a POST request to log out -->
                         <form method="post" action="{% url 'logout' %}" style="display: inline;">
                             {% csrf_token %}
                             <button type="submit" class="dropdown-item text-center">Logout</button>
@@ -65,59 +74,56 @@
         </div>
       </nav>
 
+      <!-- Main Content Area -->
       <main>
         {% block content %}
-        <!-- 这里是页面的主要内容区域 -->
+        <!-- This is the main content area of the page -->
         {% endblock %}
       </main>
 
+      <!-- Footer Section -->
       <footer class="bg-dark pt-5 pb-3 footer text-white  footer-dark bg-tertiary">
         <div class="container">
           <div class="row">
+            <!-- About NIFTY Section -->
             <div class="col-12 col-md-4">
               <div class="pr-lg-5">
                 <h1 class="heading h6 text-uppercase text-gray font-weight-700 mb-3"><strong>NIFTY</strong></h1>
                 <p>Nifty is a comprehensive information platform. Here you can collect reviews and express your opinion. Make life a little more different. </p>
               </div>
             </div>
+            <!-- Pages Links -->
             <div class="col-6 col-md">
               <h5 class="heading h6 text-uppercase font-weight-700 mb-3">Pages</h5>
               <ul class="list-unstyled text-small">
-                <li><a class="text-white" href="#">Home</a></li>
-                <li><a class="text-white" href="#">Book</a></li>
-                <li><a class="text-white" href="#">Movie</a></li>
-                <li><a class="text-white" href="#">TvShow</a></li>
+                <li><a class="text-white" href="{% url 'index' %}">Home</a></li>
+                <li><a class="text-white" href="{% url 'bookhome' %}">Book</a></li>
+                <li><a class="text-white" href="{% url 'moviehome' %}">Movie</a></li>
+                <li><a class="text-white" href="{% url 'tvshowhome' %}">TvShow</a></li>
               </ul>
             </div>
+            <!-- Solutions Links -->
             <div class="col-6 col-md">
               <h5 class="heading h6 text-uppercase font-weight-700 mb-3">Solutions</h5>
               <ul class="list-unstyled text-small">
-                <li><a class="text-white" href="#">Resource</a></li>
-                <li><a class="text-white" href="#">Resource name</a></li>
-                <li><a class="text-white" href="#">Another resource</a></li>
-                <li><a class="text-white" href="#">Final resource</a></li>
+                <li><a class="text-white" href="https://v5.bootcss.com/">Django</a></li>
+                <li><a class="text-white" href="https://github.com/dropbox/zxcvbn"> Zxcvbn</a></li>
+                <li><a class="text-white" href="https://github.com/kartik-v/yii2-widget-rating">StarRating</a></li>
+                <li><a class="text-white" href="https://www.digitalocean.com/">Digital Ocean</a></li>
               </ul>
             </div>
-            <div class="col-6 col-md">
-              <h5 class="heading h6 text-uppercase font-weight-700 mb-3">Resources</h5>
-              <ul class="list-unstyled text-small">
-                <li><a class="text-white" href="#">Business</a></li>
-                <li><a class="text-white" href="#">Education</a></li>
-                <li><a class="text-white" href="#">Government</a></li>
-                <li><a class="text-white" href="#">Gaming</a></li>
-              </ul>
-            </div>
+            <!-- About Links -->
             <div class="col-6 col-md">
               <h5 class="heading h6 text-uppercase font-weight-700 mb-3">About</h5>
               <ul class="list-unstyled text-small">
-                <li><a class="text-white" href="#">Team</a></li>
-                <li><a class="text-white" href="#">Locations</a></li>
+                <li><a class="text-white" href="https://github.com/Healithusuk/IT-TeamProject-Group43">Team Github</a></li>
+                <li><a class="text-white" href="https://www.gla.ac.uk/">University of Glasgow</a></li>
                 <li><a class="text-white" href="#">Privacy</a></li>
-                <li><a class="text-white" href="#">Terms</a></li>
               </ul>
             </div>
           </div>
           <hr>
+          <!-- Footer Bottom: Copyright Notice -->
           <div class="d-flex align-items-center">
             <span class="">
               &copy; 2025 <a href="{% url 'index' %}" class="footer-link" target="_blank">Nifty Group</a>. All rights reserved.
@@ -131,7 +137,7 @@
       <!-- Use Custom js -->
       <script src="{% static 'base/js/base.js' %}"></script>
       {% block extra_js %}
-        <!-- 这里会加载页面专用的 JS -->
+        <!-- Here the page-specific JS is loaded -->
       {% endblock %}
     </body>
 </html>

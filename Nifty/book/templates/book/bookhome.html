@@ -8,9 +8,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Nifty</title>
         <link rel="icon" href="{% static 'index/images/logo.png' %}" type="image/x-icon">
-        <!-- Use Bootstrap -->
+        <!-- Use Bootstrap js -->
         <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
-        <!-- Use Custom css style -->
+        <!-- Import page css files -->
         {% block extra_css %}
           <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
           <link rel="stylesheet" href="{% static 'css/bookhome.css' %}" type="text/css">
@@ -22,7 +22,7 @@
     </head>
     <body>               
         {% block content %}
-            <div class="container-fluid search-page-main">
+            <div class="container-fluid search-page-main" id="search-page-main">
                 <div class="input-group mb-4 mx-auto">
                     <h1 class="title_home fw-bold">BOOK</h1>
                 </div>
@@ -39,46 +39,46 @@
                         </div>
                     </div>
                 </div>
-                <!-- 搜索结果 -->
-                 
+
+                <!-- Search results -->
                 {% if query %}
                     <div class="row">
                         <h5 class="mt-4 text-warning text-center">Books ({{ books|length }}) results</h5>
                         {% if books %}
-                        {% for book in books %}
-                            <div class="col-12 mb-1 results-body" data-category="book">
-                                <div class="card card-horizontal custom-card">
-                                    <a href="{% url 'bookdetail' book.book_id %}" class="text-decoration-none text-reset">
-                                        <div class="row g-0">
-                                            <!-- 左侧图片区域 -->
-                                            <div class="col-md-2">
-                                            {% if book.book_cover_image %}
-                                                <img src="{{ book.book_cover_image.url }}" class="img-fluid rounded-start custom-poster" alt="{{ book.book_name }}">
-                                            {% else %}
-                                                <img src="{% static 'default_book.jpg' %}" class="img-fluid rounded-start custom-poster" alt="No image">
-                                            {% endif %}
+                            {% for book in books %}
+                                <div class="col-12 mb-1 results-body" data-category="book">
+                                    <div class="card card-horizontal custom-card">
+                                        <a href="{% url 'bookdetail' book.book_id %}" class="text-decoration-none text-reset">
+                                            <div class="row g-0">
+                                                <!-- Left image area -->
+                                                <div class="col-md-2">
+                                                {% if book.book_cover_image %}
+                                                    <img src="{{ book.book_cover_image.url }}" class="img-fluid rounded-start custom-poster" alt="{{ book.book_name }}">
+                                                {% else %}
+                                                    <img src="{% static 'default_book.jpg' %}" class="img-fluid rounded-start custom-poster" alt="No image">
+                                                {% endif %}
+                                                </div>
+                                                <!-- Right Text Area -->
+                                                <div class="col-md-8">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title fw-bold">{{ book.book_name }}</h5>
+                                                        <p class="card-text">{{ book.book_release_year|date:"F j, Y" }}</p>
+                                                        <p class="card-text">{{ book.book_genre }}</p>
+                                                        <p class="card-text">{{ book.book_writer }}</p>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <!-- 右侧文本区域 -->
-                                            <div class="col-md-8">
-                                            <div class="card-body">
-                                                <h5 class="card-title fw-bold">{{ book.book_name }}</h5>
-                                                <p class="card-text">{{ book.book_release_year|date:"F j, Y" }}</p>
-                                                <p class="card-text">{{ book.book_genre }}</p>
-                                                <p class="card-text">{{ book.book_writer }}</p>
-                                            </div>
-                                            </div>
-                                        </div>
-                                    </a>
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
                         {% else %}
                         <p class="text-muted text-center">No books found.</p>
                         {% endif %}
                     </div>
-                    {% else %}
+                {% else %}
                     <h5 class="text-light text-center">Please enter a book keyword to search.</h5>
-                    {% endif %}
+                {% endif %}
             </div>
             <button id="backToTop" class="btn btn-outline-success">Back to Top</button>
         {% endblock %}

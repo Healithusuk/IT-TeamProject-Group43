@@ -22,13 +22,14 @@ from .views import IndexView
 from django.conf import settings
 from django.conf.urls.static import static
 
+
+# register all apps urls
 urlpatterns = [
     path("", IndexView.as_view(template_name = "index.html"), name = "index"),
     path("admin/", admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('userprofile/', include('userprofile.urls')),
     path('search/', include('search.urls')),
-    #path('maintenance/', include('maintenance.urls')),
     path('movie/', include('movie.urls')),
     path('tvShow/', include('tvShow.urls')),
     path('book/', include('book.urls')),

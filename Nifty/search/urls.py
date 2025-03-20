@@ -3,5 +3,5 @@ from django.contrib.auth.views import LogoutView
 from .views import searchView
 
 urlpatterns = [
-    path('', searchView, name= 'search'),
+    path('', searchView, name= 'search'), # seach page url
 ]

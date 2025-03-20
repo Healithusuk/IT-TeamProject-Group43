@@ -22,7 +22,7 @@
     </head>
     <body>               
         {% block content %}
-            <div class="container-fluid search-page-main">
+            <div class="container-fluid search-page-main" id="search-page-main">
                 <div class="input-group mb-4 mx-auto">
                     <h1 class="title_home fw-bold">TVSHOW</h1>
                 </div>
@@ -39,8 +39,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- 搜索结果 -->
-                 
+                
+                <!-- Search results -->
                 {% if query %}
                     <div class="row">
                         <h5 class="mt-4 text-light text-center">TvShows ({{ tvshows|length }} results)</h5>
@@ -50,7 +50,7 @@
                                 <div class="card card-horizontal custom-card">
                                     <a href="{% url 'tvshowdetail' tvshow.tvshow_id %}" class="text-decoration-none text-reset">
                                         <div class="row g-0">
-                                            <!-- 左侧图片区域 -->
+                                            <!-- Left image area -->
                                             <div class="col-md-2">
                                             {% if tvshow.tvshow_cover_image %}
                                                 <img src="{{ tvshow.tvshow_cover_image.url }}" class="img-fluid rounded-start custom-poster" alt="{{ tvshow.tvshow_name }}">
@@ -58,7 +58,7 @@
                                                 <img src="{% static 'default_book.jpg' %}" class="img-fluid rounded-start custom-poster" alt="No image">
                                             {% endif %}
                                             </div>
-                                            <!-- 右侧文本区域 -->
+                                            <!-- Right Text Area -->
                                             <div class="col-md-8">
                                             <div class="card-body">
                                                 <h5 class="card-title fw-bold">{{ tvshow.tvshow_name }}</h5>

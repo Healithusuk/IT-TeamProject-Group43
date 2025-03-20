@@ -1,3 +1,5 @@
+/*This is a css file which can control the moviedetail page*/
+
 .title-main{
     margin-top: 70px;
     background-color: #b17a5b;
@@ -5,7 +7,7 @@
 .title-words{
     font-size: 40px;
     color: #7e0097;
-    font-family: 'Rakkas', cursive;
+    font-family: 'Rakkas', cursive; /* custom-Font */
 }
 .book-detail-page{
     min-height: 1200px;
@@ -25,6 +27,11 @@
 .grade-show{
     color: #000000;
 }
+.custom-circle{
+    width: 30px; 
+    height: 30px; 
+    object-fit: cover;
+}
 .rounded-circle{
     width: 40px; 
     height: 40px; 
@@ -35,14 +42,14 @@
     border-radius: 25px;
 }
 .scrollable-comments {
-    max-height: 1200px; /* 设定最大高度，根据需要调整 */
-    overflow-y: auto;  /* 超出部分在垂直方向显示滚动条 */
+    max-height: 1200px; 
+    overflow-y: auto;  /* Vertical scroll bar for overruns */
     border-radius: 10px;
-    /* Firefox: 默认隐藏滚动条 */
+    /* Hide scrollbars by default  */
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
 }
-/* Chrome, Safari, Edge: 隐藏滚动条 */
+/* Chrome, Safari, Edge: Hide scrollbar */
 .scrollable-comments::-webkit-scrollbar {
     width: 10px;
 }
@@ -50,7 +57,7 @@
 background-color: transparent;
 border-radius: 10px;
 }
-/* 鼠标悬停时显示滚动条 */
+/* Show scrollbar on mouse hover */
 /* Firefox */
 .scrollable-comments:hover {
 scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
@@ -72,10 +79,10 @@ background-color: rgba(0, 0, 0, 0.5);
 }
 #backToTop {
     position: fixed;
-    bottom: 298px; /* 距离底部20px */
-    right: 20px;  /* 距离右侧20px */
-    display: none; /* 初始隐藏 */
-    z-index: 1000; /* 确保覆盖其它内容 */
+    bottom: 298px; 
+    right: 20px;  
+    display: none; 
+    z-index: 1000; /* Ensure that other elements are covered */
     height: 50px;
 }
 .recommendation-card{
@@ -99,34 +106,34 @@ background-color: rgba(0, 0, 0, 0.5);
     margin-top: 20px;
 }
 .related-books {
-    overflow-x: auto;        /* 允许横向滚动 */
+    overflow-x: auto;        /* Allow horizontal scrolling */
     
-    /* Firefox: 隐藏滚动条 */
-    scrollbar-width: none;   /* 隐藏滚动条 */
+    /* Firefox: Hide scrollbar */
+    scrollbar-width: none;   /* Hide scrollbar */
     
     /* IE 10+ */
     -ms-overflow-style: none;
   }
   
-  /* Chrome、Safari 等 WebKit 浏览器 */
+  /* Chrome、Safari  */
   .related-books::-webkit-scrollbar {
-    display: none;           /* 默认隐藏 */
+    display: none;           
   }
   
-  /* 当鼠标悬停时显示滚动条 */
+  /* Show scrollbar when mouse is hovering */
   /* Firefox */
   .related-books:hover {
-    scrollbar-width: thin;   /* 显示细滚动条 */
+    scrollbar-width: thin;   /* Show thin scroll bar */
   }
   
-  /* WebKit 浏览器：鼠标悬停时显示滚动条 */
+  /* WebKit Browser: Show Scrollbar on Mouse Hover */
   .related-books:hover::-webkit-scrollbar {
     display: block; 
-    height: 8px;             /* 设置滚动条高度 */
+    height: 8px;             
   }
   
   .related-books:hover::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.5);  /* 滚动条滑块颜色 */
+    background-color: rgba(0, 0, 0, 0.5);  
     border-radius: 4px;
   }
   .star-rating{

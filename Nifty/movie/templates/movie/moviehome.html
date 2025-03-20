@@ -8,9 +8,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Nifty</title>
         <link rel="icon" href="{% static 'index/images/logo.png' %}" type="image/x-icon">
-        <!-- Use Bootstrap -->
+        <!-- Use Bootstrap js -->
         <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
-        <!-- Use Custom css style -->
+        <!-- Import page css files -->
         {% block extra_css %}
           <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
           <link rel="stylesheet" href="{% static 'css/moviehome.css' %}" type="text/css">
@@ -22,7 +22,7 @@
     </head>
     <body>               
         {% block content %}
-            <div class="container-fluid search-page-main">
+            <div class="container-fluid search-page-main" id="search-page-main">
                 <div class="input-group mb-4 mx-auto">
                     <h1 class="title_home fw-bold">MOVIE</h1>
                 </div>
@@ -39,8 +39,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- 搜索结果 -->
-                 
+
+                <!-- Search results -->
                 {% if query %}
                     <div class="row">
                         <h5 class="mt-4 text-warning text-center">Movies ({{ movies|length }}) results</h5>
@@ -50,7 +50,7 @@
                                 <div class="card card-horizontal custom-card">
                                     <a href="{% url 'moviedetail' movie.movie_id %}" class="text-decoration-none text-reset">
                                         <div class="row g-0">
-                                            <!-- 左侧图片区域 -->
+                                            <!-- Left image area -->
                                             <div class="col-md-2">
                                             {% if movie.movie_cover_image %}
                                                 <img src="{{ movie.movie_cover_image.url }}" class="img-fluid rounded-start custom-poster" alt="{{ movie.movie_name }}">
@@ -58,7 +58,7 @@
                                                 <img src="{% static 'default_book.jpg' %}" class="img-fluid rounded-start custom-poster" alt="No image">
                                             {% endif %}
                                             </div>
-                                            <!-- 右侧文本区域 -->
+                                            <!-- Right Text Area -->
                                             <div class="col-md-8">
                                             <div class="card-body">
                                                 <h5 class="card-title fw-bold">{{ movie.movie_name }}</h5>

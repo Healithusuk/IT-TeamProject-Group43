@@ -1,3 +1,4 @@
+<!-- inherite base html -->
 {% extends "base.html" %}
 {% load static %}
 <!DOCTYPE html>
@@ -5,14 +6,16 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Login</title>
-        <!-- Use Bootstrap -->
+        <title>{% block title %}Nifty-Login{% endblock %}</title>
+        <!-- Use Bootstrap js -->
         <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
         {% block extra_css %}
+            <!-- import login css file -->
             <link rel="stylesheet" href="{% static 'css/login.css' %}" type="text/css">
         {% endblock %}
     </head>
     <body>
+        <!-- main body -->
         {% block content %}
             <div class="container mt-5">
                 <div class="row justify-content-center">
@@ -21,6 +24,7 @@
                             <div class="card-header bg-success text-white text-center">
                                 <h4>Login</h4>
                             </div>
+                            <!-- login card -->
                             <div class="card-body">
                                 <form method="post">
                                     {% csrf_token %}
@@ -36,14 +40,17 @@
                                         <button type="submit" class="btn btn-outline-success">Login</button>
                                     </div>
                                 </form>
+                                <!-- error message shows here -->
                                 {% if messages %}
-                                    <div class="alert alert-danger mt-3" role="alert">
-                                        {% for message in messages %}
-                                            {{ message }}
-                                        {% endfor %}
-                                    </div>
+                                    {% for message in messages %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    {% endfor %}
                                 {% endif %}
                             </div>
+                            <!-- register navigator -->
                             <div class="card-footer text-center">
                                 <a href="{% url 'register' %}" class="text-decoration-none text-light">Don't have an account?</a>
                             </div>
@@ -52,9 +59,10 @@
                 </div>
             </div>
         {% endblock %}
-            <!-- Use Bootstrap -->
+            <!-- Use Bootstrap js -->
             <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
         {% block extra_js %}
+            <!-- import login js file -->
             <script src="{% static 'js/login.js' %}"></script>
         {% endblock %}
     </body>

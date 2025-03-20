@@ -31,10 +31,10 @@
         </div>
         <div class="container">
             <div class="row main-page">
-              <!-- 左侧：关注的用户 (Following) -->
+              <!-- Left: Following users -->
               <div class="col-md-6 border-end border-secondary pe-3">
-                <h3 class="section-title">Following</h3> 
-                <!-- 搜索框 -->
+                <h3 class="section-title text-light">Following</h3> 
+                <!-- search box -->
                 <div class="mb-3 input-group flex-nowrap input-group-custom">
                   <span class="input-group-text" id="addon-wrapping">🔎</span>
                   <input type="text" id="searchInput-following" class="form-control text-center" placeholder="Following User">
@@ -45,21 +45,21 @@
                       <a href="{% url 'profile' following_user.id %}" class="text-decoration-none text-reset">
                         <div class="user-card">
                           <img src="{{ following_user.avatar.url }}" alt="{{ following_user.username }}" class="rounded-circle">
-                          <div>
+                          <div class="text-light">
                             <strong>{{ following_user.username }}</strong>
                           </div>
                         </div>
                       </a>
                     {% endfor %}
                   {% else %}
-                    <p>No following users.</p>
+                    <p class="text-light">No following users.</p>
                   {% endif %}
                 </div>
               </div>
               
               <div class="col-md-6 ps-3">
-                <h3 class="section-title">Followers</h3>
-                <!-- 搜索框 -->
+                <h3 class="section-title text-light">Followers</h3>
+                <!-- search box -->
                 <div class="mb-3 input-group flex-nowrap input-group-custom">
                   <span class="input-group-text" id="addon-wrapping">🔎</span>
                   <input type="text" id="searchInput-followers" class="form-control text-center" placeholder="Follower User">
@@ -70,24 +70,20 @@
                       <a href="{% url 'profile' follower_user.id %}" class="text-decoration-none text-reset">
                         <div class="user-card">
                           <img src="{{ follower_user.avatar.url }}" alt="{{ follower_user.username }}" class="rounded-circle">
-                          <div>
+                          <div class="text-light">
                             <strong>{{ follower_user.username }}</strong>
                           </div>
                         </div>
                       </a>
                     {% endfor %}
                   {% else %}
-                    <p>No followers.</p>
+                    <p class="text-light">No followers.</p>
                   {% endif %}
                 </div>
               </div>
             </div>
           </div>
           
-          
-        
-        
-        
         {% endblock %}
       
         

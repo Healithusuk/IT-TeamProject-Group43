@@ -1,3 +1,4 @@
+<!-- inherite base html -->
 {% extends "base.html" %}
 {% load static %}
 <!DOCTYPE html>
@@ -5,10 +6,11 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Register</title>
-        <!-- Use Bootstrap -->
+        <title>{% block title %}Nifty-Register{% endblock %}</title>
+        <!-- Use Bootstrap css -->
         <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
         {% block extra_css %}
+            <!-- Use register css -->
             <link rel="stylesheet" href="{% static 'css/register.css' %}" type="text/css">
         {% endblock %}
     </head>
@@ -21,9 +23,19 @@
                             <div class="card-header bg-success text-white text-center">
                                 <h4>User Register</h4>
                             </div>
+                            <!-- card body here -->
                             <div class="card-body">
                                 <form method="post" action="{% url 'register' %}" class="mt-4">
                                     {% csrf_token %}
+                                    <!-- error message will display here -->
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            {{ message }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
                                     <div class="mb-3">
                                         <label for="username" class="form-label text-light">Username <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control text-center" id="username" name="username" placeholder="Max 25 characters" maxlength="25" required>
@@ -41,36 +53,40 @@
                                         <input type="text" class="form-control text-center" id="last_name" name="last_name" placeholder="LastName">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="password1" class="form-label text-light">Password <span class="text-danger">*</span></label>
-                                        <input type="password" class="form-control text-center" id="password1" name="password1" placeholder="Password" required>
+                                        <label for="password1" class="form-label text-light">
+                                          Password <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="password" class="form-control text-center" id="password1" name="password1" placeholder="Password(At least 4 characte)" required>
+                                        <!-- Displays a password strength reminder -->
+                                        <div id="password-strength" class="mt-2"></div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="password2" class="form-label text-light">Confirm Password <span class="text-danger">*</span></label>
                                         <input type="password" class="form-control text-center mb-3" id="password2" name="password2" placeholder="Confirm Password" required>
                                     </div>
+                                    <!-- Register navigator -->
                                     <button type="submit" class="btn btn-outline-success w-50 d-block mx-auto mb-3">Register</button>
+                                    <!-- login navigator -->
                                     <div class="card-footer text-center">
                                         <a href="{% url 'login' %}" class="text-decoration-none text-light">Already have an account?</a>
                                     </div>
                                     <span class="text-danger">* is required</span>
                                 </form>
-                                {% if messages %}
-                                    <div class="alert alert-danger mt-3" role="alert">
-                                        {% for message in messages %}
-                                            {{ message }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
                             </div>
                         </div>
                     </div>
                 </div>
             </div> 
         {% endblock %}
-        <!-- Use Bootstrap -->
+        <!-- Use Bootstrap js -->
         <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
         {% block extra_js %}
+            <!-- Use register js -->
             <script src="{% static 'js/register.js' %}"></script>
+            <!-- Use jquery -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <!-- Use zxcvbn -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
         {% endblock %}
     </body>
 </html>

@@ -4,32 +4,38 @@ from allModels.models import Movies, Books, TvShows, Reviews, Accounts  # 根据
 from .forms import AccountSettingsForm
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
+from django.contrib import messages
 # Create your views here.
 
-@login_required(login_url='index')  # 如果只有登录用户才能访问
+@login_required(login_url='index')  # If only logged in users can access the
 def profileView(request, user_id):
     
-    # 假设当前用户已登录
+    # Assuming the current user is logged in
     profile_user = get_object_or_404(Accounts, pk=user_id)
     is_owner = (request.user.id == profile_user.id)
     is_followed = False
-    # 处理更新个人信息
+    # Handling of updated personal information
     if request.method == "POST":
         form = AccountSettingsForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('profile', request.user.id)  # 或其他你希望重定向的页面
+            return redirect('profile', request.user.id)  
+        else:
+            # Add form errors to the message box
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
     else:
         form = AccountSettingsForm(instance=request.user)
 
-    # favorites 字段结构: {"movie": [{id:.., name:..}, ...], "book": [...], "tv": [...]}
+    # favorites : {"movie": [{id:.., name:..}, ...], "book": [...], "tv": [...]}
     favorites_data = profile_user.favorites or {"movie": [], "book": [], "tv": []}
 
     favorite_details = {"movie": [], "book": [], "tv": []}
 
-    # 处理电影收藏
+    # Processing movie collections
     for item in favorites_data.get("movie", []):
-        # 查询电影对象（这里使用 get_object_or_404 或 get() 均可）
+        # Query Movie Objects）
         movie = get_object_or_404(Movies, movie_id=item['id'])
         favorite_details["movie"].append({
             "self":movie,
@@ -37,7 +43,7 @@ def profileView(request, user_id):
             "cover": movie.movie_cover_image.url if movie.movie_cover_image else None
         })
 
-    # 处理书籍收藏
+    # Handling of book collections
     for item in favorites_data.get("book", []):
         book = get_object_or_404(Books, book_id=item['id'])
         favorite_details["book"].append({
@@ -46,7 +52,7 @@ def profileView(request, user_id):
             "cover": book.book_cover_image.url if book.book_cover_image else None
         })
 
-    # 处理电视收藏
+    # Disposal of television collection
     for item in favorites_data.get("tv", []):
         tv = get_object_or_404(TvShows, tvshow_id=item['id'])
         favorite_details["tv"].append({
@@ -55,7 +61,7 @@ def profileView(request, user_id):
             "cover": tv.tvshow_cover_image.url if tv.tvshow_cover_image else None
         })
     
-    # 过滤出当前登录用户的所有评论
+    # Filter out all comments from currently logged in users
     user_reviews = Reviews.objects.filter(user=profile_user)
     
     user_following_num = profile_user.get_following_num
@@ -80,33 +86,40 @@ def profileView(request, user_id):
     else:
         return render(request, 'userprofile/guestprofile.html', context)
 
-@login_required
-@require_POST
+@login_required  # Ensure that the user is logged in before accessing this view.
+@require_POST    # This view only accepts POST requests.
 def deleteFavorite(request, user_id):
+    # Retrieve the 'category' parameter from the POST data.
     category = request.POST.get('category')
     item_id  = request.POST.get('item_self')
     try:
-        print("1")
+        # Attempt to remove the favorite item using the user's remove_favorite method.
         request.user.remove_favorite(category, item_id)
     except Exception as e:
         return JsonResponse({'success': False, 'message': str(e)})
+    
+    # If removal is successful, return a JSON response with success=True.
     return JsonResponse({'success': True})
 
-@login_required
-@require_POST
+@login_required  # Ensure that the user is logged in before accessing this view.
+@require_POST    # This view only accepts POST requests.
 def deleteReview(request, user_id):
+    # Retrieve the review_id from the POST data.
     review_id = request.POST.get('review_id')
     if not review_id:
         return JsonResponse({'success': False, 'message': 'Missing review id'})
     try:
+        # Attempt to retrieve the review object that matches the given review_id and belongs to the current user.
         review = Reviews.objects.get(pk=review_id, user=request.user)
         review.remove_reviews()
         return JsonResponse({'success': True})
     except Reviews.DoesNotExist:
+        # If the review is not found, return a JSON response indicating failure.
         return JsonResponse({'success': False, 'message': 'Review not found'})
+  
     
-@login_required
-@require_POST
+@login_required  # Ensure that the user is logged in before accessing this view.
+@require_POST    # This view only accepts POST requests.
 def followUser(request, user_id):
     if not user_id:
         return JsonResponse({"success": False, "message": "Missing target user id."}, status=400)
@@ -119,13 +132,13 @@ def followUser(request, user_id):
     
     current_user = request.user
 
-    # 确保 following 和 follower 是字典
+    # Make sure that following and follower are dictionaries
     if not current_user.following or not isinstance(current_user.following, dict):
         current_user.following = {}
     if not target_user.follower or not isinstance(target_user.follower, dict):
         target_user.follower = {}
 
-    # 如果当前用户还没有关注目标用户，则添加关注
+    # If the current user is not already following the target user, add the following
     if str(target_user.id) not in current_user.following:
         current_user.following[str(target_user.id)] = True
         current_user.save()
@@ -136,7 +149,7 @@ def followUser(request, user_id):
         action = 'unfollowed'
         
     
-    # 同时在目标用户的 follower 字段中添加当前用户
+    # Also add the current user to the follower field of the target user
     if str(current_user.id) not in target_user.follower:
         target_user.follower[str(current_user.id)] = True
         target_user.save()
@@ -151,22 +164,20 @@ def followUser(request, user_id):
     return JsonResponse({'success': True, 'action':action, 'user_follower_num': user_follower_num,})
 
 def followDetail(request, user_id):
-    # 获取要查看的用户对象
     profile_user = get_object_or_404(Accounts, pk=user_id)
     
-    # 如果 following 存在，则将字典的键转换为整数列表；否则为空列表
+    # If following exists, the keys of the dictionary are converted to a list of integers; otherwise, it is an empty list.
     if profile_user.following and isinstance(profile_user.following, dict):
         following_ids = [int(uid) for uid in profile_user.following.keys()]
     else:
         following_ids = []
     
-    # 同理，获取 follower 的用户 ID 列表
+    # Get a list of the follower's user IDs
     if profile_user.follower and isinstance(profile_user.follower, dict):
         follower_ids = [int(uid) for uid in profile_user.follower.keys()]
     else:
         follower_ids = []
     
-    # 查询对应的用户对象
     following_users = Accounts.objects.filter(pk__in=following_ids)
     follower_users = Accounts.objects.filter(pk__in=follower_ids)
     

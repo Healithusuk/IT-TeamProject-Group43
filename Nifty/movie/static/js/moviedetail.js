@@ -1,3 +1,4 @@
+// rating-star plugin jQuery
 jQuery(document).ready(function () {
 
     $('#ratingwork').on('rating.change', function(event, value, caption) {
@@ -51,7 +52,6 @@ jQuery(document).ready(function () {
         alert($('#rating-input').val());
     });
 
-
     $('.rb-rating').rating({
         'showCaption': true,
         'stars': '3',
@@ -66,21 +66,29 @@ jQuery(document).ready(function () {
     });
 });
 
+
 $(document).ready(function(){
+
+    // Retrieve the CSRF token from the meta tag in the HTML header.
     var csrftoken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    // Attach a click event handler to the button with ID "add-favorite-btn".
     $('#add-favorite-btn').on('click', function(){
+      // Send an AJAX POST request to the backend view URL "add_to_favorite/"
       $.ajax({
-        url: "add_to_favorite/",  // 后端视图 URL
+        url: "add_to_favorite/",  
         type: "POST",
         data: {
           category: 'movie',
-          item_id: "{{ movie.movie_id }}",  // 当前书籍的 ID
+          item_id: "{{ movie.movie_id }}",  
         },
         headers: { "X-CSRFToken": csrftoken },
+
+        // Handle a successful response from the server.
         success: function(response) {
           if (response.success) {
             if(response.action === 'added') {
-              // 修改按钮样式：移除 btn-outline-primary，添加 btn-outline-success
+              // Update button styling: remove "btn-outline-primary", add "btn-outline-success", and update text.
               $('#add-favorite-btn').removeClass('btn-outline-primary').addClass('btn-outline-success').text("Added to Favorites❤️");;
             } else {
               $('#add-favorite-btn').removeClass('btn-outline-success').addClass('btn-outline-primary').text("Add to Favorites🤍");;
@@ -88,15 +96,14 @@ $(document).ready(function(){
           }
         },
         error: function(xhr, status, error) {
-          alert("Error: " + error);
         }
       });
     });
-  });
+});
 
-
+// Control the back to top button
 $(document).ready(function(){
-    // 当滚动超过300px时显示返回顶部按钮
+    // Show back to top button when scrolling over 300px
     $(window).scroll(function(){
       if ($(this).scrollTop() > 300) {
         $('#backToTop').fadeIn();
@@ -104,8 +111,7 @@ $(document).ready(function(){
         $('#backToTop').fadeOut();
       }
     });
-    
-    // 点击按钮时平滑滚动到顶部
+    // Smooth scrolling to the top when clicking a button
     $('#backToTop').click(function(){
       $('html, body').animate({scrollTop: 0}, 600);
       return false;

@@ -1,3 +1,32 @@
+/*This is a css file which can control the followdetail page*/
+
+/*Setting the body background*/
+body{
+  background-image: url("../images/profile.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  position: relative; /* Position the pseudo-element relative to the body */
+}
+
+/*Set a black mask for the overall background*/
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4); 
+  pointer-events: none; /* Masking layers do not affect page operations */
+  z-index: -99;
+}
+
+/* Ensure that page content is displayed above the mask layer */
+.container-fluid {
+  position: relative;
+  z-index: 10;
+}
 .main-page{
     margin-top: 50px;
     height: 1000px;
@@ -10,6 +39,9 @@
     display: flex;
     align-items: center;
     background-color: #d4ae766e;
+  }
+  .user-card:hover {
+    transform: scale(1.01); /* Enlargement 5% */
   }
   .user-card img {
     width: 50px;
@@ -31,7 +63,7 @@
     font-family: 'Rakkas', cursive;
 }
 .scrollable-users {
-    max-height: 1000px; /* 根据需要调整高度 */
-    overflow-y: auto;  /* 超出部分自动显示垂直滚动条 */
-    overflow-x: hidden; /* 隐藏横向滚动条 */
+    max-height: 1000px; 
+    overflow-y: auto;  
+    overflow-x: hidden; 
   }

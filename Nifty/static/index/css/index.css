@@ -13,17 +13,21 @@ body {
   height: 500px;
   object-fit: cover;
 }
-/* 搜索框绝对定位 */
+/* Absolute positioning of the search box */
 .search-box {
   position: absolute;
-  top: 45%;           /* 调整距离顶部的距离 */
-  left: 30%;           /* 水平居中 */
+  top: 45%;           
+  left: 30%;           
   transform: translateX(-50%);
-  z-index: 10;         /* 确保搜索框在图片之上 */
-  width: 80%;          /* 根据需要调整宽度 */
+  z-index: 10;         /* Make sure the search box is above the image */
+  width: 80%;          
   max-width: 500px;
 }
-/* 搜索框内表单样式 */
+.custom-circle{
+  width: 30px; 
+  height: 30px; 
+  object-fit: cover;
+}
 .search-box form {
   display: flex;
   padding: 10px;
@@ -53,11 +57,11 @@ body {
 }
 .login-register {
   position: absolute;
-  top: 25%;           /* 调整距离顶部的距离 */
-  left: 70%;           /* 水平居中 */
+  top: 25%;           
+  left: 70%;           
   transform: translateX(-50%);
-  z-index: 10;         /* 确保搜索框在图片之上 */
-  width: 300px;          /* 根据需要调整宽度 */
+  z-index: 10;         /* Make sure the search box is above the image */
+  width: 300px;         
   max-width: 500px;
 }
 .auth-tabs a {
@@ -71,23 +75,23 @@ body {
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 5px; /* 根据需要调整间隔 */
+  gap: 5px; /* Adjust intervals as needed */
   max-width: 300px;
 }
 .auth-separator {
   margin: 0 10px;
-  color:#ffffff;  /* 确保颜色与周围文本一致 */
+  color:#ffffff;  
 }
 input {
   text-align: center;
 }
 .login-register-notice{
   position: absolute;
-  top: 40%;           /* 调整距离顶部的距离 */
-  left: 70%;           /* 水平居中 */
+  top: 40%;           
+  left: 70%;           
   transform: translateX(-50%);
-  z-index: 10;         /* 确保搜索框在图片之上 */
-  width: 300px;          /* 根据需要调整宽度 */
+  z-index: 10;         
+  width: 300px;          
   max-width: 500px;
 }
 .login-register-notice p{
@@ -99,7 +103,7 @@ input {
   height: auto;
   font-size: 40px;
   color: #e6a800;
-  background-color: rgba(0, 0, 0, 1); /* 修改为半透明 */
+  background-color: rgba(0, 0, 0, 1); 
 }
 .ollection-record-title{
 
@@ -110,15 +114,15 @@ input {
   padding-top: 50px;
 }
 .movie-show h1 {
-  font-family: 'Font Awesome', sans-serif; /* 替换为你想要的字体 */
-  font-size: 36px; /* 你可以设置任意大小 */
-  color: rgb(0, 162, 255); /* 设置颜色 */
+  font-family: 'Font Awesome', sans-serif; 
+  font-size: 36px; 
+  color: rgb(0, 162, 255); 
   margin-bottom: 20px;
   font-weight: bold;
 }
 .content-parts {
-  width: 50%;   /* 限制宽度为 50% */
-  margin-left: 300px;  /* 靠左对齐 */
+  width: 50%;   
+  margin-left: 300px;  
   margin-right: auto;
   margin-bottom: 50px;
 }
@@ -129,19 +133,19 @@ input {
 }
 .movie-card .card  {
   height: 120px;
-  width: 100px; /* 你想要的固定宽度 */
-  margin-bottom: 100px;  /* 调整底部间距 */
+  width: 100px; 
+  margin-bottom: 100px;  
 }
 .scrollable-comments {
   margin-top: 22px;
-  max-height: 438px;  /* 固定高度，根据需要调整 */
-  overflow-y: auto;   /* 超出高度后出现垂直滚动条 */
+  max-height: 438px;  
+  overflow-y: auto;   /* Vertical scrollbar appears when height is exceeded */
   border-radius: 10px;
-  /* Firefox: 默认隐藏滚动条 */
+  /* Firefox: Hide scrollbars by default */
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
 }
-/* Chrome, Safari, Edge: 隐藏滚动条 */
+/* Chrome, Safari, Edge: Hide scrollbar */
 .scrollable-comments::-webkit-scrollbar {
   width: 8px;
 }
@@ -149,7 +153,7 @@ input {
   background-color: transparent;
   border-radius: 10px;
 }
-/* 鼠标悬停时显示滚动条 */
+/* Show scrollbar on mouse hover */
 /* Firefox */
 .scrollable-comments:hover {
   scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
@@ -165,10 +169,9 @@ input {
   font-size: 12px;
   margin-top: -10px;
   margin-bottom: -150px;
-  white-space: nowrap;       /* 强制文本在同一行显示 */
-  overflow: hidden;          /* 超出部分隐藏 */
-  text-overflow: ellipsis;   /* 使用省略号表示被截断的文本 */
-  /* 根据需要设置其他间距 */
+  white-space: nowrap;       
+  overflow: hidden;          
+  text-overflow: ellipsis;   
 }
 .star-rating {
   margin-bottom: 0px;
@@ -183,21 +186,20 @@ input {
   border-radius: 10px;
 }
 .series-show {
-  background-color: #161616d2; /* 或 gray */
+  background-color: #161616d2;
   color: #ecd4b7;
   height: 650px;
   padding-top: 50px;
 }
 .series-show h1 {
   font-weight: bold;
-  font-family: 'Font Awesome', sans-serif; /* 替换为你想要的字体 */
+  font-family: 'Font Awesome', sans-serif; 
   font-size: 40px;
 }
 .vertical-divider {
-  width: 1px;               /* 分割线宽度 */
-  background-color: #0374a133;   /* 分割线颜色 */
-  /* 让分割线的高度与左右容器相同 */
-  height: auto;             /* 或者设置为一个具体的高度 */
+  width: 1px;               
+  background-color: #0374a133;   
+  height: auto;             
   border-radius: 10px;
 }
 .books-show {
@@ -208,7 +210,7 @@ input {
 }
 .books-show h1 {
   font-weight: bold;
-  font-family: 'Font Awesome', sans-serif; /* 替换为你想要的字体 */
+  font-family: 'Font Awesome', sans-serif; 
   font-size: 44px;
 }
 .index-username-show {
@@ -225,11 +227,12 @@ input {
   top: 20px;
   right: 20px;
   z-index: 1050;
-  /* 根据需要调整宽度和其它样式 */
 }
 .review-card {
   cursor: pointer;
 }
+
+/* Define a CSS animation called 'fadeInUp' */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -241,29 +244,28 @@ input {
   }
 }
 
-/* 如果只想给标题添加动画，可以单独设置 */
 .collection-record-title {
   animation: fadeInUp 2s ease forwards;
 }
 
-/* 卡片初始状态：透明且向下偏移 */
+/* Initial state of the card: transparent and offset downwards */
 .card {
   opacity: 0;
   transform: translateY(40px);
   transition: all 0.7s ease-out;
 }
 
-/* 激活后状态：完全显示且回到原位 */
+/* Status after activation: fully displayed and returned to its original position */
 .card.show {
   opacity: 1;
   transform: translateY(0);
 }
 #backToTop {
   position: fixed;
-  bottom: 298px; /* 距离底部20px */
-  right: 20px;  /* 距离右侧20px */
-  display: none; /* 初始隐藏 */
-  z-index: 1000; /* 确保覆盖其它内容 */
+  bottom: 298px; 
+  right: 20px;  
+  display: none; 
+  z-index: 1000; 
   height: 50px;
 }
 

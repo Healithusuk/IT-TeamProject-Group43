@@ -4,8 +4,10 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 
+# moviehome page function
 def moviehomeView(request):
-    query = request.GET.get('q', '')  # 获取关键字，默认为空
+    # Retrieve the search keyword from the GET parameter 'q', defaulting to an empty string if not provided.
+    query = request.GET.get('q', '')  
     if query:
         movies = Movies.objects.filter(movie_name__icontains=query) 
     else:
@@ -17,13 +19,15 @@ def moviehomeView(request):
     }
     return render(request, 'movie/moviehome.html', context)
 
+# moviedetail page function
 def moviedetailView(request, movie_id):
-    
+    # Get the current logged-in user
     user = request.user
     movie = get_object_or_404(Movies, movie_id=movie_id)
     movie_ct = ArtworkType.objects.get(artwork_type="movie")
     favorited = False
     
+    # Handle POST requests (when submitting a review or rating)
     if request.method == "POST":
         review_text = request.POST.get('reviewText', '').strip()
         rating_value = request.POST.get('ratingwork')
@@ -39,20 +43,19 @@ def moviedetailView(request, movie_id):
         else:
             movie.update_rating(user.pk, rating_value)
         movie.update_rating(user.pk,int(rating_value))
-        
         return redirect(request.get_full_path())
     
+    # If the user is authenticated, check if the book is already in their favorites
     if user.is_authenticated:
-        # favorites 存储的是字典，其中 "book" 对应一个列表
         favorites = user.favorites or {}
         movie_favorites = favorites.get("movie", [])
         favorited = any(str(fav.get('id')) == str(movie.movie_id) for fav in movie_favorites) 
       
     reviews_for_books = Reviews.objects.filter(review_content_type=movie_ct,review_content_id=movie.movie_id)        
-       
     user_current_rating = movie.movie_average_rate.get(str(user.pk),0)  
     
-    # 查询相同 genre 的书籍，排除当前这本书，随机取几本，比如取 5 本
+    # Query for related books with the same genre, excluding the current book,
+    # and randomly order them; select up to 10 related books.
     related_movies = Movies.objects.filter(movie_genre=movie.movie_genre).exclude(movie_id=movie.movie_id).order_by('?')[:10]
        
     context = {
@@ -64,21 +67,22 @@ def moviedetailView(request, movie_id):
     }
     return render(request, 'movie/moviedetail.html', context)
 
-@login_required
-@require_POST
+@login_required  # Ensure the user is logged in before accessing this view.
+@require_POST    # Only allow POST requests for this view.
 def moviedetailAddFavoriteView(request, movie_id):
-    # 获取 POST 数据中的类别和收藏项 ID
+    
+    # Retrieve the 'category' and 'item_id' parameters from the POST data.
     category = request.POST.get('category')
     item_id = request.POST.get('item_id')
     movie = get_object_or_404(Movies, movie_id=movie_id)
     favorited = False
-    # favorites 存储的是字典，其中 "book" 对应一个列表
+
     favorites = request.user.favorites or {}
     movie_favorites = favorites.get("movie", [])
-    # 假设你存储时是以字典形式保存，并且 key 为 "id"
-    # 转换为字符串，确保匹配
+  
     favorited = any(str(fav.get('id')) == str(movie.movie_id) for fav in movie_favorites)
     
+    # If either the category or item_id is missing, return a JSON error response.
     if not category or not item_id:
         return JsonResponse({'success': False, 'message': 'Missing parameters.'})
     try:
@@ -91,4 +95,5 @@ def moviedetailAddFavoriteView(request, movie_id):
     except Exception as e:
         return JsonResponse({'success': False, 'message': str(e)})
     
+    # Return a JSON response indicating the success of the operation and the action taken.
     return JsonResponse({'success': True, 'action':action})

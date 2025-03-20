@@ -1,34 +1,42 @@
+/*This is a css file which can control the register page*/
+
+/*Setting the overall background*/
 body{
     background-image: url("../images/register.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    position: relative;
+    position: relative; /* Position the pseudo-element relative to the body */
 }
-  body::before {
+
+/*Set a black mask for the overall background*/
+body::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.4); /* 黑色阴影，透明度可根据需要调整 */
-    pointer-events: none; /* 遮罩层不影响页面操作 */
+    background-color: rgba(0, 0, 0, 0.4); 
+    pointer-events: none; 
     z-index: -11;
-  }
+}
   
-  /* 确保页面内容显示在遮罩层之上 */
-  .container {
+/* Ensure that the page content is displayed above the mask layer */
+.container {
     position: relative;
     z-index: 1;
-  }
-  .card{
+}
+
+.card{
     margin-top: 150px;
     margin-bottom: 150px;
-  }
+}
+
+/*Creating a frosted effect on a card*/
 .card-frosted {
-    background: rgba(0, 0, 0, 0.5); /* 半透明背景，根据需要调整颜色和透明度 */
-    backdrop-filter: blur(10px);         /* 磨砂效果，调整数值控制模糊程度 */
-    -webkit-backdrop-filter: blur(10px); /* Safari 浏览器兼容 */
+    background: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(10px);         
+    -webkit-backdrop-filter: blur(10px); 
     border-radius: 10px;
-  }
+}

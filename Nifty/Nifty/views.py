@@ -3,31 +3,42 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
 from django.shortcuts import render
 from allModels.models import Reviews,Movies,TvShows,Books,ArtworkType
-from django.contrib.contenttypes.models import ContentType
 
 class IndexView(TemplateView):
+    # Specify the template to be used for rendering the index page.
     template_name = "index.html"
 
     def post(self, request, *args, **kwargs):
         username = request.POST.get('username')
         password = request.POST.get('password')
+        
+        # Authenticate the user using the provided credentials.
         user = authenticate(request, username=username, password=password)
         if user is not None:
+             # If authentication is successful, log the user in.
             login(request, user)
             return redirect('index')
         else:
-            # 登录失败时，把错误信息加入上下文并重新渲染页面
+            # If authentication fails, get the default context data.
             context = self.get_context_data()
-            context['error'] = "Invalid credentials. Please try again."
+            context['error'] = "Invalid username or password. Please try again."
             return self.render_to_response(context)
     
     def get_context_data(self, **kwargs):
+        # Get the default context data from the parent class.
         context = super().get_context_data(**kwargs)
-        # 随机抽取 10 条评论
+        
+        # Retrieve a random selection of 16 TV shows.
         all_series = list(TvShows.objects.order_by('?')[:16])
+        
+        # Calculate the midpoint to divide the TV shows into two groups.
         half_series = len(all_series)//2
+        
+        # Get the artwork type objects for movies and books.
         movie_ct = ArtworkType.objects.get(artwork_type="movie")
         book_ct = ArtworkType.objects.get(artwork_type="book")
+        
+        # Filter reviews for movies and books based on their content type.
         reviews_for_movies = Reviews.objects.filter(review_content_type=movie_ct)
         reviews_for_books = Reviews.objects.filter(review_content_type=book_ct)        
         

@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     "book",
     "tvShow",
     "userprofile",
-    "maintenance",
     "search",
 ]
 
@@ -148,5 +147,6 @@ LOGOUT_REDIRECT_URL = 'index'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'cover')
 MEDIA_URL = '/images/'
 LOGIN_URL = '/login/'
+
 
 

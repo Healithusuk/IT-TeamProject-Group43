@@ -19,21 +19,21 @@ class AccountSettingsForm(forms.ModelForm):
         instance = super().save(commit=False)
         default_path = 'user_avatar/avatar_default.png'
         
-        # 如果表单提交中 avatar 字段被清除，则 form.cleaned_data['avatar'] 为 False/None
+        # If the avatar field is cleared in the form submission, then form.cleaned_data['avatar'] is False/None
         if 'avatar' in self.changed_data and not self.cleaned_data.get('avatar'):
-            # 如果数据库中已经存在一个 avatar 文件，则先删除实际文件
+            # If an avatar file already exists in the database, delete the actual file first
             if instance.pk:
                 try:
                     old_instance = Accounts.objects.get(pk=instance.pk)
-                    # 判断旧的 avatar 是否存在且不是默认图片
+                    # Determines if the old avatar exists and is not the default image.
                     if old_instance.avatar and str(old_instance.avatar) != default_path:
                         old_instance.avatar.delete(save=False)
                 except Accounts.DoesNotExist:
                     pass
-            # 此时 instance.avatar 会被设置为 None
+            # instance.avatar will then be set to None
             instance.avatar = None
 
-        # 如果用户没有上传头像且 avatar 为 None，则设置默认路径
+        # If the user has not uploaded an avatar and avatar is None, the default path is set
         if not instance.avatar:
             instance.avatar = default_path
 

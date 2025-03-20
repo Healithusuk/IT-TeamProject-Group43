@@ -1,28 +1,31 @@
+/*This is a css file which can control the search page*/
+
 body{
     background-image: url("../images/search.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    position: relative; /* 让伪元素相对于 body 定位 */
-  }
+    position: relative; /* Position the pseudo-element relative to the body */
+}
 
-  body::before {
+/*Set a black mask for the overall background*/
+body::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.4); /* 黑色阴影，透明度可根据需要调整 */
-    pointer-events: none; /* 遮罩层不影响页面操作 */
+    background-color: rgba(0, 0, 0, 0.4); 
+    pointer-events: none; /* Masking layers do not affect page operations */
     z-index: 0;
-  }
+}
   
-  /* 确保页面内容显示在遮罩层之上 */
-  .container-fluid {
+/* Ensure that page content is displayed above the mask layer */
+.container-fluid {
     position: relative;
     z-index: 1;
-  }
+}
 .search-page-main{
     min-height: 1270px;
 }
@@ -33,27 +36,27 @@ input::placeholder{
     text-align: center;
 }
 .my-hr {
-    width: 72%;      /* 设置宽度为50%或你希望的具体宽度 */
-    margin: 0 auto;  /* 左右自动外边距实现居中 */
+    width: 72%;      
+    margin: 0 auto;  /* Left and right auto margins for centering */
     border: none;
-    border-top: 3px solid #ccc;  /* 设置上边框作为线条 */
+    border-top: 3px solid #ccc;  
 }
 .title_home{
     margin-top: 170px;
     color: #7e0097;
   }
 .custom-card {
-    max-width: 1000px;  /* 设定卡片的最大宽度 */
-    margin: 0 auto;    /* 自动左右外边距，实现居中 */
-    transition: transform 0.2s ease; /* 添加平滑过渡效果 */
+    max-width: 1000px;  
+    margin: 0 auto;    /* Left and right auto margins for centering */
+    transition: transform 0.2s ease; /* Add a smooth transition effect */
 }
 .custom-card:hover {
-    transform: scale(1.025); /* 放大 5% */
+    transform: scale(1.025); /* Enlargement 5% */
 }
 .custom-poster {
-    width: 120px;          /* 占满父容器的宽度 */
-    max-height: 200px;    /* 限制最大高度 */
-    object-fit: cover;    /* 保持比例，裁剪超出部分 */
+    width: 120px;          
+    max-height: 200px;    /* Limit maximum height */
+    object-fit: cover;    
 }
 .search-notice{
     margin-top: 10px;
@@ -62,18 +65,18 @@ input::placeholder{
     margin-left: 200px;
 }
 .bio-text{
-    white-space: nowrap;       /* 防止换行 */
-    overflow: hidden;          /* 隐藏超出部分 */
-    text-overflow: ellipsis;   /* 超出部分显示省略号 */
+    white-space: nowrap;       
+    overflow: hidden;          
+    text-overflow: ellipsis;   
 }
 .user-card{
     height: 126px;
     max-width: 1000px;
     margin: 0 auto; 
-    transition: transform 0.2s ease; /* 添加平滑过渡效果 */
+    transition: transform 0.2s ease; 
 }
 .user-card:hover {
-    transform: scale(1.025); /* 放大 5% */
+    transform: scale(1.025); /* Enlargement 5% */
 }
 .user-poster{
     height: 125px;
@@ -81,10 +84,10 @@ input::placeholder{
 }
 #backToTop {
     position: fixed;
-    bottom: 20px; /* 距离底部20px */
-    right: 20px;  /* 距离右侧20px */
-    display: none; /* 初始隐藏 */
-    z-index: 1000; /* 确保覆盖其它内容 */
+    bottom: 20px; 
+    right: 20px;  
+    display: none; 
+    z-index: 1000; 
     height: 50px;
   }
 

@@ -44,9 +44,9 @@
                       <button class="btn btn-outline-light filter-btn" data-filter="user">User</button>
                     </div>
                 </div>
-                <!-- 搜索结果 -->
+                <!-- Search results -->
                 {% if query %}
-                    <!-- Movies 搜索结果 -->
+                    <!-- Movies Search results -->
                     <div class="row">
                         <h5 class="mt-4 text-light text-center">Movies ({{ movie_results|length }})</h5>
                     {% if movie_results %}
@@ -55,7 +55,7 @@
                             <div class="card card-horizontal custom-card">
                                 <a href="{% url 'moviedetail' movie.movie_id %}" class="text-decoration-none text-reset">
                                     <div class="row g-0">
-                                        <!-- 左侧图片区域 -->
+                                        <!-- Left image area -->
                                         <div class="col-md-2">
                                         {% if movie.movie_cover_image %}
                                             <img src="{{ movie.movie_cover_image.url }}" class="img-fluid rounded-start custom-poster" alt="{{ movie.movie_name }}">
@@ -63,7 +63,7 @@
                                             <img src="{% static 'default_movie.jpg' %}" class="img-fluid rounded-start custom-poster" alt="No image">
                                         {% endif %}
                                         </div>
-                                        <!-- 右侧文本区域 -->
+                                        <!-- Right Text Area -->
                                         <div class="col-md-8">
                                         <div class="card-body">
                                             <h5 class="card-title fw-bold">{{ movie.movie_name }}</h5>
@@ -82,7 +82,7 @@
                     {% endif %}
                     </div>
                     
-                    <!-- Books 搜索结果 -->
+                    <!-- Books search results -->
                     <div class="row">
                         <h5 class="mt-4 text-light text-center">Books ({{ book_results|length }})</h5>
                     {% if book_results %}
@@ -91,7 +91,7 @@
                             <div class="card card-horizontal custom-card">
                                 <a href="{% url 'bookdetail' book.book_id %}" class="text-decoration-none text-reset">
                                     <div class="row g-0">
-                                        <!-- 左侧图片区域 -->
+                                        <!-- Left image area -->
                                         <div class="col-md-2">
                                         {% if book.book_cover_image %}
                                             <img src="{{ book.book_cover_image.url }}" class="img-fluid rounded-start custom-poster" alt="{{ book.book_name }}">
@@ -99,7 +99,7 @@
                                             <img src="{% static 'default_book.jpg' %}" class="img-fluid rounded-start custom-poster" alt="No image">
                                         {% endif %}
                                         </div>
-                                        <!-- 右侧文本区域 -->
+                                        <!-- Right Text Area  -->
                                         <div class="col-md-8">
                                         <div class="card-body">
                                             <h5 class="card-title fw-bold">{{ book.book_name }}</h5>
@@ -118,7 +118,7 @@
                     {% endif %}
                     </div>
                     
-                    <!-- TvShows 搜索结果 -->
+                    <!-- TvShows Search results -->
                     <div class="row">
                         <h5 class="mt-4 text-light text-center">TvShows ({{ tv_results|length }})</h5>
                     {% if tv_results %}
@@ -127,7 +127,7 @@
                             <div class="card card-horizontal custom-card">
                                 <a href="{% url 'tvshowdetail' tv.tvshow_id %}" class="text-decoration-none text-reset">
                                     <div class="row g-0">
-                                        <!-- 左侧图片区域 -->
+                                        <!-- Left image area -->
                                         <div class="col-md-2">
                                         {% if tv.tvshow_cover_image %}
                                             <img src="{{ tv.tvshow_cover_image.url }}" class="img-fluid rounded-start custom-poster" alt="{{ tv.tvshow_name }}">
@@ -135,7 +135,7 @@
                                             <img src="{% static 'default_tv.jpg' %}" class="img-fluid rounded-start custom-poster" alt="No image">
                                         {% endif %}
                                         </div>
-                                        <!-- 右侧文本区域 -->
+                                        <!-- Right Text Area -->
                                         <div class="col-md-8">
                                         <div class="card-body">
                                             <h5 class="card-title fw-bold">{{ tv.tvshow_name }}</h5>
@@ -154,31 +154,35 @@
                     {% endif %}
                     </div>
 
-                    <!-- Users 搜索结果 -->
+                    <!-- Users Search results -->
                     <div class="row">
                         <h5 class="mt-4 text-light text-center">Users ({{ user_results|length }})</h5>
                     {% if user_results %}
-                        {% for user in user_results %}
+                        {% for usertarget in user_results %}
                         <div class="col-12 mb-1 results-body" data-category="user">
                             <div class="card card-horizontal user-card">
-                                <a href="{% url 'profile' user.pk %}" class="text-decoration-none text-reset">
+                                {% if user.is_authenticated %}
+                                    <a href="{% url 'profile' usertarget.pk %}" class="text-decoration-none text-reset">
+                                {% else %}
+                                    <a href="{% url 'login' %}?next={{ request.path }}" class="text-decoration-none text-reset">
+                                {% endif %}
                                     <div class="row g-0">
-                                        <!-- 左侧图片区域 -->
+                                        <!-- Left image area -->
                                         <div class="col-md-2">
-                                            {% if user.avatar %}
-                                                <img src="{{ user.avatar.url }}" class="img-fluid rounded-start user-poster" alt="{{ user.username }}">
+                                            {% if usertarget.avatar %}
+                                                <img src="{{ usertarget.avatar.url }}" class="img-fluid rounded-start user-poster" alt="{{ usertarget.username }}">
                                             {% else %}
                                                 <img src="{% static 'avatar_default.png' %}" class="img-fluid rounded-start user-poster" alt="No image">
                                             {% endif %}
                                         </div>
-                                        <!-- 右侧文本区域 -->
+                                        <!-- Right Text Area -->
                                         <div class="col-md-8">
                                         <div class="card-body">
-                                            <h5 class="card-title fw-bold">{{ user.username }} (UID: {{ user.pk }})</h5>
-                                            <p class="card-text bio-text">Bio: {{ user.bio }}</p>
+                                            <h5 class="card-title fw-bold">{{ usertarget.username }} (UID: {{ usertarget.pk }})</h5>
+                                            <p class="card-text bio-text">Bio: {{ usertarget.bio }}</p>
                                             <div class="d-flex">
-                                                <p class="card-text me-3">{{ user.get_follower_num }} Follower</p>
-                                                <p class="card-text">{{ user.get_following_num }} Following</p>
+                                                <p class="card-text me-3">{{ usertarget.get_follower_num }} Follower</p>
+                                                <p class="card-text">{{ usertarget.get_following_num }} Following</p>
                                             </div>
                                         </div>
                                         </div>

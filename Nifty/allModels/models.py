@@ -12,23 +12,25 @@ from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ObjectDoesNotExist
 from collections import OrderedDict
 
+# User avatar upload function
 def user_avatar_upload_to(instance, filename):
-        # 获取原文件扩展名
         ext = filename.split('.')[-1]
-        # 如果实例已经有主键，则用该主键作为文件名
+        # If the instance already has a primary key, use that primary key as the filename
         if instance.pk:
             new_filename = f"avatar_{instance.pk}.{ext}"
         else:
-            # 如果还没有主键，可以用原始文件名或者用其他方式生成唯一文件名
             new_filename = f"avatar_temp.{ext}"
-        return os.path.join('user_avatar', new_filename)  # 文件将保存在 MEDIA_ROOT/user/ 下
+        return os.path.join('user_avatar', new_filename)  
 
+# Defining default favorite data structure functions
 def default_favorites():
     return {"movie": [], "book": [], "tv": []}
 
+# Accounts model, which defines the fields of the database table Accounts.
 class Accounts(AbstractUser):
+    email = models.EmailField(unique=True)
     username = models.CharField(
-        max_length=25,  # 修改为25
+        max_length=25,  
         unique=True,
         help_text='Required. 25 characters or fewer. Letters, digits and @/./+/-/_ only.'
     )
@@ -39,29 +41,33 @@ class Accounts(AbstractUser):
     following = models.JSONField(default=dict, blank=True)
     follower = models.JSONField(default=dict, blank=True)
     
+    # Use the property annotation to make functions directly accessible in the template
+    # This function gets the number of following for the user entity
     @property
     def get_following_num(self):
         return len(self.following or {})
     
+    # This function gets the number of follower for the user entity
     @property
     def get_follower_num(self):
         return len(self.follower or {})
     
+    # Add Favorite Functions
     def add_favorite(self, category_key, favorite_item_id):
-        # 构造收藏项信息
+        # Constructing Favorite Item Information
         favorite_item_id_map = {
-            'id': favorite_item_id,         # 作品的主键
+            'id': favorite_item_id,         
         }
-        # 确保 favorites 是字典且含有各类别的列表
+        # Ensure that favorites is a dictionary and contains a list of categories
         if not self.favorites or not isinstance(self.favorites, dict):
             self.favorites = {"movie": [], "book": [], "tv": []}
         if favorite_item_id_map in self.favorites.get(category_key, []):
-        # 如果存在，则直接返回，不添加
             return
-        # 将新收藏项追加到对应类别的列表中
+        # Append new favorites to the list of corresponding categories
         self.favorites[category_key].append(favorite_item_id_map)
         self.save()
-        
+    
+    # Remove Favorite Functions     
     def remove_favorite(self, category_key, favorite_item_id):
         if not self.favorites or not isinstance(self.favorites, dict):
             self.favorites = {"movie": [], "book": [], "tv": []}
@@ -80,10 +86,12 @@ class Accounts(AbstractUser):
         db_table = 'Accounts'
         verbose_name = 'Account'
         verbose_name_plural = 'Accounts'
-        
+    
+    # define the str of accounts    
     def __str__(self):
         return f'{self.username}[{self.is_superuser}|{self.pk}|{self.email}]'
-    
+
+# Defined categories of works    
 class ArtworkType(models.Model):
     artwork_type_id = models.AutoField(primary_key=True)
     artwork_type = models.CharField(max_length=255)
@@ -95,7 +103,8 @@ class ArtworkType(models.Model):
         
     def __str__(self):
         return self.artwork_type
-   
+ 
+# The model defines the fields and data types of the reviews  
 class Reviews(models.Model):
     review_id = models.AutoField(primary_key=True)
     review_text = models.TextField(default=1)
@@ -105,14 +114,14 @@ class Reviews(models.Model):
     rating = models.IntegerField(default=0,blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
+    # remove reviews function
     def remove_reviews(self):
         self.delete()
     
+    # Get the name of the work corresponding to the comment
     def get_artwork_name(self):
-        """
-        根据 review_content_type 和 review_content_id 获取对应的作品对象
-        """
-        # 获取 ArtworkType 中存储的类别名称，并转换成小写以便比较
+        # Gets the name of the category stored in ArtworkType 
+        # and converts it to lowercase for comparison purposes.
         artwork_category = self.review_content_type.artwork_type.lower()
         try:
             if artwork_category == 'movie':
@@ -124,6 +133,7 @@ class Reviews(models.Model):
         except ObjectDoesNotExist:
             return None
 
+    # Get the cover of the work for which you are commenting
     def get_artwork_cover(self):
         artwork_category = self.review_content_type.artwork_type.lower()
         try:
@@ -136,24 +146,20 @@ class Reviews(models.Model):
         except ObjectDoesNotExist:
             return None
     
+    # Returns the name of the corresponding work
     @property
     def review_content_name(self):
-        """
-        返回对应作品的名称
-        """
         artwork = self.get_artwork_name()
         if artwork:
-            return artwork  # 假设各模型都有 artwork_name 属性
+            return artwork  
         return "Unknown"
     
+    # Returns the cover url of the corresponding work
     @property
     def review_content_cover_image(self):
-        """
-        返回对应作品的名称
-        """
         artwork_cover_image = self.get_artwork_cover()
         if artwork_cover_image:
-            return artwork_cover_image  # 假设各模型都有 artwork_name 属性
+            return artwork_cover_image  
     
     class Meta:
         db_table = 'Reviews'
@@ -163,6 +169,7 @@ class Reviews(models.Model):
     def __str__(self):
         return f'{self.review_id}[{self.get_artwork_name()}|{self.pk}|{self.user}]'
     
+# The model defines the fields and data types of the movie    
 class Movies(models.Model):
     movie_id = models.AutoField(primary_key=True)
     movie_name = models.CharField(max_length=255)
@@ -179,45 +186,45 @@ class Movies(models.Model):
     movie_rating_count = models.PositiveIntegerField(default=0)
     movie_average_rate = models.JSONField(default=dict, blank=True)
     
+    # Returns the name of the movie
     @property
     def artwork_name(self):
         return self.movie_name
     
+    # Calculating the distribution of scoring stars in a movie entity
     @property
     def star_distribution(self):
-        # 初始化统计字典
         distribution = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
         ratings = list(self.movie_average_rate.values())
         total = len(ratings)
         if total == 0:
-            return distribution  # 没有评分时，全部为0%
-        # 统计每个星级的次数
+            return distribution  # default=0%
         for rating in ratings:
             try:
-                # 如果 rating 是字符串，也转换为 int
                 star = int(rating)
             except (ValueError, TypeError):
                 continue
-            # 确保范围在 1~5
+            # range of 1~5
             star = max(1, min(star, 5))
             distribution[star] += 1
-        # 将次数转换为百分比
+        # Conversion of counts to percentages
         for star in distribution:
             distribution[star] = round((distribution[star] / total) * 100, 1)
-        # 按 key 从大到小排序
+        # Sort by key in descending order
         sorted_distribution = OrderedDict(sorted(distribution.items(), key=lambda x: x[0], reverse=True))
         return sorted_distribution
     
+    # Functions for users to update their ratings
     def update_rating(self, user_id, rating_value):
-        # 将用户的评分存入字典中，注意 rating_value 应该在 1 到 5 范围内
-        self.movie_average_rate[str(user_id)] = rating_value  # key 转为字符串
+        # Stores the user's rating in a dictionary, rating_value in the range 1 to 5
+        self.movie_average_rate[str(user_id)] = rating_value  
         self.movie_rating_count = len(self.movie_average_rate)
         self.save()
 
+    # Calculate the overall average user score
     def average_rating(self):
         if self.movie_average_rate:
             try:
-                # 将所有评分转换为数字（这里使用 float，确保支持小数评分）
                 ratings = [float(v) for v in self.movie_average_rate.values()]
             except (ValueError, TypeError):
                 return 0
@@ -234,6 +241,7 @@ class Movies(models.Model):
     def __str__(self):
         return f'{self.movie_id}[{self.movie_name}|{self.movie_release_year}|{self.movie_average_rate}]'
 
+# The model defines the fields and data types of the book
 class Books(models.Model):
     book_id = models.AutoField(primary_key=True)
     book_name = models.CharField(max_length=255)
@@ -249,46 +257,44 @@ class Books(models.Model):
     book_rating_count = models.PositiveIntegerField(default=0)
     book_average_rate = models.JSONField(default=dict, blank=True)
     
+    # Returns the name of the book
     @property
     def artwork_name(self):
         return self.book_name
     
+    # Calculating the distribution of scoring stars in a book entity
     @property
     def star_distribution(self):
-        # 初始化统计字典
         distribution = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
         ratings = list(self.book_average_rate.values())
         total = len(ratings)
         if total == 0:
-            return distribution  # 没有评分时，全部为0%
-        # 统计每个星级的次数
+            return distribution  # default=0%
         for rating in ratings:
             try:
-                # 如果 rating 是字符串，也转换为 int
                 star = int(rating)
             except (ValueError, TypeError):
                 continue
-            # 确保范围在 1~5
+            # range of 1~5
             star = max(1, min(star, 5))
             distribution[star] += 1
-        # 将次数转换为百分比
         for star in distribution:
             distribution[star] = round((distribution[star] / total) * 100, 1)
-        # 按 key 从大到小排序
+        # Sort by key in descending order
         sorted_distribution = OrderedDict(sorted(distribution.items(), key=lambda x: x[0], reverse=True))
         return sorted_distribution
     
+    # Functions for users to update their ratings
     def update_rating(self, user_id, rating_value):
-        # 将用户的评分存入字典中，注意 rating_value 应该在 1 到 5 范围内
-        self.book_average_rate[str(user_id)] = rating_value  # key 转为字符串
+        # Stores the user's rating in a dictionary, rating_value in the range 1 to 5
+        self.book_average_rate[str(user_id)] = rating_value  
         self.book_rating_count = len(self.book_average_rate)
         self.save()
 
-
+    # Calculate the overall average user score
     def average_rating(self):
         if self.book_average_rate:
             try:
-                # 将所有评分转换为数字（这里使用 float，确保支持小数评分）
                 ratings = [float(v) for v in self.book_average_rate.values()]
             except (ValueError, TypeError):
                 return 0
@@ -320,45 +326,44 @@ class TvShows(models.Model):
     tvshow_rating_count = models.PositiveIntegerField(default=0)
     tvshow_average_rate = models.JSONField(default=dict, blank=True)
     
+    # Returns the name of the tvshow
     @property
     def artwork_name(self):
         return self.tvshow_name
     
+    # Calculating the distribution of scoring stars in a tvshow entity
     @property
     def star_distribution(self):
-        # 初始化统计字典
         distribution = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
         ratings = list(self.tvshow_average_rate.values())
         total = len(ratings)
         if total == 0:
-            return distribution  # 没有评分时，全部为0%
-        # 统计每个星级的次数
+            return distribution  # default=0%
         for rating in ratings:
             try:
-                # 如果 rating 是字符串，也转换为 int
                 star = int(rating)
             except (ValueError, TypeError):
                 continue
-            # 确保范围在 1~5
+            # range of 1~5
             star = max(1, min(star, 5))
             distribution[star] += 1
-        # 将次数转换为百分比
         for star in distribution:
             distribution[star] = round((distribution[star] / total) * 100, 1)
-        # 按 key 从大到小排序
+        # Sort by key in descending order
         sorted_distribution = OrderedDict(sorted(distribution.items(), key=lambda x: x[0], reverse=True))
         return sorted_distribution
     
+    # Functions for users to update their ratings
     def update_rating(self, user_id, rating_value):
-        # 将用户的评分存入字典中，注意 rating_value 应该在 1 到 5 范围内
-        self.tvshow_average_rate[str(user_id)] = rating_value  # key 转为字符串
+        # Stores the user's rating in a dictionary, rating_value in the range 1 to 5
+        self.tvshow_average_rate[str(user_id)] = rating_value  
         self.tvshow_rating_count = len(self.tvshow_average_rate)
         self.save()
 
+    # Calculate the overall average user score
     def average_rating(self):
         if self.tvshow_average_rate:
             try:
-                # 将所有评分转换为数字（这里使用 float，确保支持小数评分）
                 ratings = [float(v) for v in self.tvshow_average_rate.values()]
             except (ValueError, TypeError):
                 return 0

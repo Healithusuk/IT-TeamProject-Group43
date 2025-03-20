@@ -22,7 +22,7 @@
     </head>
     <body>
       {% block content %}
-
+        <!-- Container for the title image, carousel, and search/login/register section -->
         <div class="container-fluid titleImage_container">
           <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-pause="false">
             <div class="carousel-indicators">
@@ -31,35 +31,43 @@
               <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
             </div>
             <div class="carousel-inner">
+              <!-- First slide, set as active -->
               <div class="carousel-item active">
                 <img src="{% static 'index/images/index1.jpg' %}" class="d-block w-100" alt="...">
               </div>
+              <!-- Second slide -->
               <div class="carousel-item">
                 <img src="{% static 'index/images/index2.jpg' %}" class="d-block w-100" alt="...">
               </div>
+              <!-- Third slide -->
               <div class="carousel-item">
                 <img src="{% static 'index/images/index3.jpg' %}" class="d-block w-100" alt="...">
               </div>
             </div>
           </div>
+
+          <!-- Search box overlay on top of the carousel -->
           <div class="search-box">
             <form action="{% url 'search' %}" method="get">
               <input type="text" name="q" placeholder="Movie,Book,TvShow,User" class="search-input" value="{{ query }}">
               <button type="submit" class="btn btn-success">Search</button>
             </form>
           </div>
+
+          <!-- If the user is authenticated, display a welcome message -->
           {% if user.is_authenticated %}
             <div class="login-register-notice text-light">
               <h1 class="index-username-show"><strong>Welcome,</strong></h1>
               <h1 class="index-username-show"><strong>{{ user.username|truncatechars:21 }}</strong></h1>
             </div>
           {% else %}
+            <!-- If the user is not authenticated, display the login/register form -->
             <div class="login-register">
               <div class="auth-card">
                 <div class="auth-tabs d-flex justify-content-center">
                   <a href="" class="active">Sign In</a>
                 </div>
-                <!-- 表单部分 -->
+                <!-- Authentication form for login -->
                 <form class="auth-form" method="POST">
                   {% csrf_token %}
                   <div class="mb-3">
@@ -72,14 +80,18 @@
                     <button type="submit" class="btn btn-success w-100">Login</button>
                   </div>
                 </form>
+
+                <!-- Links for "Forgot Password?" and "Register" -->
                 <div class="text-center auth-links">
-                  <a href="#" class="text-decoration-none">Forgot Password?</a>
+                  <a href="{% url 'password_reset' %}" class="text-decoration-none">Forgot Password?</a>
                   <span class="auth-separator">   |   </span>
                   <a href="{% url 'register' %}" class="text-decoration-none">Register</a>
                 </div>
               </div>
             </div>
           {% endif %}
+
+          <!-- Display an error alert if an error message exists -->
           {% if error %}
             <div class="alert alert-danger alert-dismissible fade show floating-alert" role="alert">
               {{ error }}
@@ -88,6 +100,7 @@
           {% endif %}
         </div>
 
+        <!-- Collection record section showing the counts of movies, books, and TV shows -->
         <div class="container-fluid collection-record justify-content-center align-items-center">
           <p class="text-center fw-bold collection-record-title">WE HAVE</p>
           <!-- 显示数量 -->
@@ -98,28 +111,33 @@
           </div>
         </div>
 
+        <!-- Section for displaying movies -->
         <div class="container-fluid movie-show">
           <div class="text-center">
             <h1>Movie</h1>
           </div>
           <div class="container movie-part">
             <div class="row justify-content-center">
-              <!-- 左侧容器 -->
+              <!-- Left container for movie cards -->
               <div class="col-md-5 me-4 text-center ">
-                <!-- 左侧内容区域 -->
                 <div class="container mt-4">
                   <div class="row g-2">
+                    <!-- Loop through the list of movies and display each movie as a card -->
                     {% for movie in movies %}
                       <div class="col-md-3 movie-card">
+
+                        <!-- Movie poster image -->
                         <a href="{% url 'moviedetail' movie.movie_id %}" class="text-decoration-none text-reset">
                           <div class="card">
                             <img src="{{ movie.movie_cover_image.url }}"
                                 class="card-img-top movie-poster" alt="Movie Poster">
                             <div class="card-body text-center">
+                              <!-- Movie title -->
                               <p class="movie-title">{{ movie.movie_name }}</p>
                             </div>
+
+                            <!-- Star rating display using a rating plugin -->
                             <div class="star-rating">
-                              <!-- 使用插件显示评分 -->
                               <input id="movie-rating-{{ movie.movie_id }}" type="text" class="rating rating-loading" value="{{ movie.average_rating|floatformat:1 }}" data-min="0" data-max="10" data-step="0.1"  data-size="xs" readonly>
                             </div>
                           </div>
@@ -129,11 +147,12 @@
                   </div>
                 </div>
               </div>
-              <!-- 分割线 -->
+
+              <!-- Vertical divider between movie cards and reviews -->
               <div class="vertical-divider"></div>
-              <!-- 右侧容器 -->
+              <!-- Right container for movie reviews -->
               <div class="col-md-5 ms-4">
-                <!-- 这里放右侧内容 -->
+                <!-- Loop through movie reviews and display each review as a clickable card -->
                 <div class="scrollable-comments">
                   {% for review in reviews_movies %}
                     <div class="card review-card comments-card mb-2" onclick="window.location.href='{% url 'moviedetail' review.review_content_id %}'">
@@ -143,14 +162,14 @@
                             {% if user.is_authenticated %}
                               <a href="{% url 'profile' review.user.id %}" onclick="event.stopPropagation();" class="text-decoration-none text-reset">
                                 <div class="d-flex align-items-center">
-                                  <img src="{{ review.user.avatar.url }}" alt="User Avatar" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                                  <img src="{{ review.user.avatar.url }}" alt="User Avatar" class="rounded-circle custom-circle me-2">
                                   <h5 class="card-title mb-0">{{ review.user.username }}</h5>
                                 </div>
                               </a>
                             {% else %}
                               <a href="{% url 'login' %}?next={% url 'profile' review.user.id %}" onclick="event.stopPropagation();" class="text-decoration-none text-reset">
                                 <div class="d-flex align-items-center">
-                                  <img src="{{ review.user.avatar.url }}" alt="User Avatar" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                                  <img src="{{ review.user.avatar.url }}" alt="User Avatar" class="rounded-circle custom-circle me-2">
                                   <h5 class="card-title mb-0">{{ review.user.username }}</h5>
                                 </div>
                               </a>
@@ -159,7 +178,7 @@
                           </div>
                         {% else %}
                           <div class="d-flex align-items-center">
-                            <img src="{% static '/user/avatar_default.png' %}" alt="User Avatar" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                            <img src="{% static '/user/avatar_default.png' %}" alt="User Avatar" class="rounded-circle custom-circle me-2">
                             <h5 class="card-title mb-0">{{ review.user.username }}</h5>
                             <p class="card-title-artwork mb-0 ms-auto text-decoration-none text-primary">{{review.review_content_type|upper}}|{{ review.review_content_name|truncatechars:35 }}</p>
                           </div>
@@ -177,26 +196,29 @@
           </div>
         </div>
 
+        <!-- Section for displaying TV shows -->
         <div class="container-fluid series-show">
           <h1 class="series-part-title text-center">TvShow</h1>
           <div class="container series-part">
             <div class="row justify-content-center">
-              <!-- 左侧容器 -->
+              <!-- Left container for TV show cards -->
               <div class="col-md-5 me-4 text-center ">
-                <!-- 左侧内容区域 -->
                 <div class="container mt-4">
                   <div class="row g-2">
                     {% for tvshow in series_left %}
                       <div class="col-md-3 movie-card">
                         <a href="{% url 'tvshowdetail' tvshow.tvshow_id %}" class="text-decoration-none text-reset">
                           <div class="card">
+                            <!-- TV show cover image -->
                             <img src="{{ tvshow.tvshow_cover_image.url }}"
                                 class="card-img-top movie-poster" alt="Movie Poster">
                             <div class="card-body text-center">
+                              <!-- TV show title -->
                               <p class="movie-title">{{ tvshow.tvshow_name }}</p>
                             </div>
+
+                            <!-- Display TV show rating using a plugin -->
                             <div class="star-rating">
-                              <!-- 使用插件显示评分 -->
                               <input id="movie-rating-{{ tvshow.tvshow_id }}" type="text" class="rating rating-loading" value="{{ tvshow.average_rating|floatformat:1 }}" data-min="0" data-max="10" data-step="0.1"  data-size="xs" readonly>
                             </div>
                           </div>
@@ -206,11 +228,11 @@
                   </div>
                 </div>
               </div>
-              <!-- 右侧容器 -->
+              <!-- Right container for the other half of the TV shows -->
               <div class="col-md-5 ms-4">
-                <!-- 这里放右侧内容 -->
                 <div class="container mt-4">
                   <div class="row g-2">
+                    <!-- Loop through the right half of the TV shows -->
                     {% for tvshow in series_right %}
                       <div class="col-md-3 movie-card">
                         <a href="{% url 'tvshowdetail' tvshow.tvshow_id %}" class="text-decoration-none text-reset">
@@ -220,8 +242,9 @@
                             <div class="card-body text-center">
                               <p class="movie-title">{{ tvshow.tvshow_name }}</p>
                             </div>
+
+                            <!-- Display TV show rating using a plugin -->
                             <div class="star-rating">
-                              <!-- 使用插件显示评分 -->
                               <input id="movie-rating-{{ tvshow.tvshow_id }}" type="text" class="rating rating-loading" value="{{ tvshow.average_rating|floatformat:1 }}" data-min="0" data-max="10" data-step="0.1"  data-size="xs" readonly>
                             </div>
                           </div>
@@ -235,14 +258,15 @@
           </div>
         </div>
 
+        <!-- Section for displaying Books -->
         <div class="container-fluid books-show">
           <h1 class="books-part-title text-center">Books</h1>
           <div class="container series-part">
             <div class="row justify-content-center">
-              <!-- 左侧容器 -->
+              <!-- Left container for book reviews -->
               <div class="col-md-5 me-4">
-                <!-- 左侧内容区域 -->
                 <div class="scrollable-comments">
+                  <!-- Loop through book reviews -->
                   {% for review in reviews_books %}
                     <div class="card review-card comments-card mb-2" onclick="window.location.href='{% url 'bookdetail' review.review_content_id %}'">
                       <div class="card-body">
@@ -251,14 +275,14 @@
                             {% if user.is_authenticated %}
                               <a href="{% url 'profile' review.user.id %}" onclick="event.stopPropagation();" class="text-decoration-none text-reset">
                                 <div class="d-flex align-items-center">
-                                  <img src="{{ review.user.avatar.url }}" alt="User Avatar" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                                  <img src="{{ review.user.avatar.url }}" alt="User Avatar" class="rounded-circle custom-circle me-2">
                                   <h5 class="card-title mb-0">{{ review.user.username }}</h5>
                                 </div>
                               </a>
                             {% else %}
                               <a href="{% url 'login' %}?next={% url 'profile' review.user.id %}" onclick="event.stopPropagation();" class="text-decoration-none text-reset">
                                 <div class="d-flex align-items-center">
-                                  <img src="{{ review.user.avatar.url }}" alt="User Avatar" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                                  <img src="{{ review.user.avatar.url }}" alt="User Avatar" class="rounded-circle custom-circle me-2">
                                   <h5 class="card-title mb-0">{{ review.user.username }}</h5>
                                 </div>
                               </a>
@@ -267,11 +291,13 @@
                           </div>
                         {% else %}
                           <div class="d-flex align-items-center">
-                            <img src="{% static '/user/avatar_default.png' %}" alt="User Avatar" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                            <img src="{% static '/user/avatar_default.png' %}" alt="User Avatar" class="rounded-circle custom-circle me-2">
                             <h5 class="card-title mb-0">{{ review.user.username }}</h5>
                             <p class="card-title-artwork mb-0 ms-auto text-decoration-none text-primary">{{review.review_content_type|upper}}|{{ review.review_content_name|truncatechars:35 }}</p>
                           </div>
                         {% endif %}
+
+                        <!-- Truncated review text for the book -->
                         <p class="card-text card-text mt-3">{{ review.review_text|truncatechars:400 }}</p>
                         <p class="text-muted text-end card-text mt-3"><small>{{ review.created_at }}</small></p>
                       </div>
@@ -281,22 +307,25 @@
                   {% endfor %}
                 </div>
               </div>
-              <!-- 右侧容器 -->
+             <!-- Right container for book cards -->
             <div class="col-md-5 ms-4 text-center ">
-              <!-- 这里放右侧内容 -->
+              
               <div class="container mt-4">
                 <div class="row g-2">
+                  <!-- Loop through the list of books and display each as a card -->
                   {% for book in books %}
                     <div class="col-md-3 movie-card">
                       <a href="{% url 'bookdetail' book.book_id %}" class="text-decoration-none text-reset">
                         <div class="card">
+                          <!-- Book cover image -->
                           <img src="{{ book.book_cover_image.url }}"
                               class="card-img-top movie-poster" alt="Movie Poster">
                           <div class="card-body text-center">
+                            <!-- Book title -->
                             <p class="movie-title">{{ book.book_name }}</p>
                           </div>
+                          <!-- Display book rating using a plugin -->
                           <div class="star-rating">
-                            <!-- 使用插件显示评分 -->
                             <input id="movie-rating-{{ book.book_id }}" type="text" class="rating rating-loading" value="{{ book.average_rating|floatformat:1 }}" data-min="0" data-max="10" data-step="0.1"  data-size="xs" readonly>
                           </div>
                         </div>
@@ -309,6 +338,7 @@
             </div>
           </div>
         </div>
+        <!-- "Back to Top" button for quickly scrolling to the top of the page -->
         <button id="backToTop" class="btn btn-outline-success">Back to Top</button>
       {% endblock %}
       

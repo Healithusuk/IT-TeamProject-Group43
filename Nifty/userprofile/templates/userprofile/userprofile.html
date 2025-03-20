@@ -24,10 +24,10 @@
       {% block content %}
 
         
-        <!-- 上部用户信息栏 -->
+        <!-- Upper User Information Column -->
         <div class="container-fluid bg-light border-bottom py-3 user-info-offset">
             <div class="container">
-                <!-- 第一部分：用户扩展信息独占一行 -->
+                <!-- Part I: Exclusive line for extended user information -->
                 <div class="row">
                     <div class="col-12 text-end user-info-extra">
                         <a href="{% url 'follow_detail' profile_user.pk %}" class="text-decoration-none">
@@ -37,9 +37,9 @@
                         <span class="fw-bold">UID: {{ profile_user.pk }}</span>
                     </div>
                 </div>
-                <!-- 第二部分：用户基本信息和 Bio 卡片并排排列 -->
+                <!-- Part II: Basic User Information and Bio Cards Side by Side -->
                 <div class="row align-items-center mt-3">
-                    <!-- 用户基本信息 -->
+                    <!-- Basic User Information -->
                     <div class="{% if profile_user.username|length > 15 %}col-md-6{% else %}col-md-5{% endif %} d-flex align-items-center user-info">
                         <img class="profile-rounded-circle" src="{{ profile_user.avatar.url }}" alt="Avatar" width="150" height="150">
                         <div class="ms-4 name-show">
@@ -48,7 +48,7 @@
                             <p>Joined {{ profile_user.date_joined|date:"F j Y" }}</p>
                         </div>
                     </div>
-                    <!-- Bio 卡片 -->
+                    <!-- Bio Cards -->
                     <div class="col-md-6 bio-card-section">
                         <div class="card bio-card">
                             <div class="card-body">
@@ -65,7 +65,7 @@
         
         <div class="container mt-4 mb-5">
             <div class="row">
-              <!-- 左侧导航 -->
+              <!-- Left Navigation -->
               <div class="col-md-3 mb-4">
                 <div class="list-group" id="list-tab" role="tablist">
                   <a class="list-group-item list-group-item-action active" id="list-detail-list" data-bs-toggle="list" href="#list-detail" role="tab" aria-controls="detail">Detail</a>
@@ -75,17 +75,25 @@
                 </div>
               </div>
           
-              <!-- 右侧主要内容 -->
+              <!-- Right main content -->
               <div class="col-md-9">
                 <div class="tab-content" id="nav-tabContent">
-                  <!-- Favorites 内容 -->
+                  <!-- Favorites Content -->
                   <div class="tab-pane fade show active" id="list-detail" role="tabpanel" aria-labelledby="list-detail-list">
-                    <!-- 在此填充 Favorites 页面内容 -->
+                    <!-- Populate Favorites page content here -->
                     <div class="card detail-page">
                       <div class="card-body">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
                         <h1 class="card-title mb-3 fw-bold">Detail</h1>
                             <div class="all-details">
-                                <!-- 用户名 -->
+                                <!-- username -->
                                 <div class="mb-3 row">
                                 <label for="username" class="col-sm-3 col-form-label">User name:</label>
                                 <div class="col-sm-9">
@@ -93,7 +101,7 @@
                                 </div>
                                 </div>
 
-                                <!-- 用户名 -->
+                                <!-- lastname -->
                                 <div class="mb-3 row">
                                     <label for="lastname" class="col-sm-3 col-form-label">Last name:</label>
                                     <div class="col-sm-9">
@@ -101,7 +109,7 @@
                                     </div>
                                 </div>
 
-                                <!-- 用户名 -->
+                                <!-- firstname -->
                                 <div class="mb-3 row">
                                     <label for="firstname" class="col-sm-3 col-form-label">First name:</label>
                                     <div class="col-sm-9">
@@ -109,7 +117,7 @@
                                     </div>
                                 </div>
                             
-                                <!-- 生日 -->
+                                <!-- birthday -->
                                 <div class="mb-3 row">
                                 <label class="col-sm-3 col-form-label">Birth date:</label>
                                 <div class="col-sm-9">
@@ -117,7 +125,7 @@
                                 </div>
                                 </div>
 
-                                <!-- 用户名 -->
+                                <!-- email -->
                                 <div class="mb-3 row">
                                     <label for="email" class="col-sm-3 col-form-label">Email:</label>
                                     <div class="col-sm-9">
@@ -125,7 +133,7 @@
                                     </div>
                                 </div>
                             
-                                <!-- 简介 -->
+                                <!-- bio -->
                                 <div class="mb-3 row">
                                 <label class="col-sm-3 col-form-label">Bio:</label>
                                 <div class="col-sm-9 bio-text">
@@ -133,7 +141,7 @@
                                 </div>
                                 </div>
 
-                                <!-- 简介 -->
+                                <!-- Last login date -->
                                 <div class="mb-3 row">
                                     <label class="col-sm-3 col-form-label">Last login date:</label>
                                     <div class="col-sm-9 bio-text">
@@ -144,13 +152,13 @@
                       </div>
                     </div>
                   </div>
-                  <!-- Favorites 内容 -->
+                  <!-- Favorites Content -->
                   <div class="tab-pane fade" id="list-favorites" role="tabpanel" aria-labelledby="list-favorites-list">
-                    <!-- 在此填充 Favorites 页面内容 -->
+                    <!-- Populate Favorites page content here -->
                     <div class="card favorites-page">
                       <div class="card-body">
                         <h1 class="card-title mb-3 fw-bold">Favorites</h1>
-                        <!-- 搜索框 -->
+                        <!-- search box -->
                         <div class="mb-3 input-group flex-nowrap input-group-custom">
                             <span class="input-group-text" id="addon-wrapping">🔎</span>
                             <input type="text" id="searchInput-favorite" class="form-control text-center" placeholder="Movie, Book, TvShow">
@@ -158,7 +166,7 @@
                         {% for category, items in favorites.items %}
                             <h2 class="text-primary">
                                 {{ category|title }} (<span id="count-{{ category }}">{{ items|length }}</span>)
-                                <!-- Edit 按钮切换显示删除按钮 -->
+                                <!-- Edit button toggles the display of the Delete button -->
                                 <button id="toggle-delete-{{ category }}" class="btn btn-sm btn-outline-danger ms-3 toggle-delete-btn">Edit</button>
                             </h2>
                             <div class="favorites-category d-flex flex-wrap text-center">
@@ -180,7 +188,7 @@
                                             <div class="card-body">
                                                 <p class="card-text text-ellipsis">{{ item.name }}</p>
                                             </div>
-                                            <!-- 删除按钮，默认隐藏 -->
+                                            <!-- Delete button, hidden by default -->
                                             <button class="btn btn-outline-danger btn-sm position-absolute delete-icon d-none">X</button>
                                             </div>
                                         </a>
@@ -194,13 +202,13 @@
                       </div>
                     </div>
                   </div>
-                  <!-- Reviews 内容 -->
+                  <!-- Reviews Content -->
                   <div class="tab-pane fade" id="list-reviews" role="tabpanel" aria-labelledby="list-reviews-list">
-                    <!-- 在此填充 Reviews 页面内容 -->
+                    <!-- Populate Reviews page content here -->
                     <div class="card reviews-page">
                       <div class="card-body">
                         <h1 class="card-title mb-3 fw-bold">Reviews</h1>
-                        <!-- 搜索框 -->
+                        <!-- search box -->
                         <div class="mb-3 input-group flex-nowrap input-group-custom">
                             <span class="input-group-text" id="addon-wrapping">🔎</span>
                             <input type="text" id="searchInput-reviews" class="form-control text-center" placeholder="Search Any Type Name Reviewtext Date">
@@ -210,9 +218,16 @@
                             <div class="scrollable-reviews">
                                 {% for review in reviews %}
                                     {% with formatted_date=review.created_at|date:"F j Y" %}
+                                    {% if review.review_content_type.artwork_type == "book" %}
+                                        <a href="{% url 'bookdetail' review.review_content_id %}" class="text-decoration-none text-reset favorite-link">
+                                    {% elif review.review_content_type.artwork_type == "movie" %}
+                                        <a href="{% url 'moviedetail' review.review_content_id %}" class="text-decoration-none text-reset favorite-link">
+                                    {% elif review.review_content_type.artwork_type == "tv" %}
+                                        <a href="{% url 'tvshowdetail' review.review_content_id %}" class="text-decoration-none text-reset favorite-link">
+                                    {% endif %}
                                     <div class="card mb-3 review-card position-relative" id="review-{{ review.pk }}" data-review-id="{{ review.pk }}">
                                     <div class="row">
-                                        <!-- 左侧海报区域 -->
+                                        <!-- Left poster area -->
                                         <div class="col-md-3">
                                         {% if review.review_content_cover_image %}
                                             <img src="{{ review.review_content_cover_image.url }}" class="img-fluid rounded-start fixed-poster" alt="{{ review.review_content_name }}">
@@ -220,7 +235,7 @@
                                             <div class="card-img-top text-center p-3">No Image</div>
                                         {% endif %}
                                         </div>
-                                        <!-- 右侧内容区域 -->
+                                        <!-- Right content area -->
                                         <div class="col-md-8">
                                         <div class="card-body d-flex flex-column">
                                             <h5 class="card-title fw-bold text-success">
@@ -233,11 +248,12 @@
                                         </div>
                                         </div>
                                     </div>
-                                    <!-- 删除按钮：默认隐藏，位于卡片右下角 -->
-                                    <button class="btn btn-outline-danger btn-sm delete-btn review-delete-icon d-none" onclick="deleteReview({{ review.pk }})">X</button>
-                                    <!-- Edit 按钮：位于卡片右上角，用来切换删除按钮的显示 -->
-                                    <button class="btn btn-outline-secondary btn-sm toggle-delete-btn review-edit-icon" onclick="toggleDelete({{ review.pk }})">Edit</button>
+                                    <!-- Delete button: hidden by default, located in the lower right corner of the card -->
+                                    <button class="btn btn-outline-danger btn-sm delete-btn review-delete-icon d-none" onclick="  deleteReview({{ review.pk }})">X</button>
+                                    <!-- Edit button: located in the upper right corner of the card, used to toggle the display of the delete button -->
+                                    <button class="btn btn-outline-secondary btn-sm toggle-delete-btn review-edit-icon" onclick="  toggleDelete({{ review.pk }})">Edit</button>
                                     </div>
+                                </a>
                                     {% endwith %}
                                 {% endfor %}
                             </div>
@@ -248,13 +264,13 @@
                       </div>
                     </div>
                   </div>
-                  <!-- Setting 内容 -->
+                  <!-- Setting contents -->
                   <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-                    <!-- 在此填充 Setting 页面内容 -->
+                    <!-- Populate the Setting page here -->
                     <div class="card settings-page">
                       <div class="card-body">
                         <h1 class="card-title mb-3 fw-bold">Setting</h1>
-                        <!-- 个人信息更新表单 -->
+                        <!-- Personal Information Update Form -->
                         <div class="mb-4">
                             <h3>Update Your Info</h3>
                             <form method="post" enctype="multipart/form-data">
@@ -271,7 +287,6 @@
                   </div>
                 </div>
               </div>
-          
             </div>
         </div>
         

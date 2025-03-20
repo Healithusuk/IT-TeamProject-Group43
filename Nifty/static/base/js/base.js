@@ -1,8 +1,8 @@
 window.addEventListener('scroll', function() {
     const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) { // 滚动超过50px时
-        navbar.classList.add('heightDecrease'); // 添加类名以改变导航栏高度
+    if (window.scrollY > 50) { // When scrolling more than 50px
+        navbar.classList.add('heightDecrease'); // Add class name to change navigation bar height
     } else {
-        navbar.classList.remove('heightDecrease'); // 移除类名以恢复
+        navbar.classList.remove('heightDecrease'); // Remove class name to restore
     }
   });

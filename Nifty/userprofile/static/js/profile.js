@@ -1,11 +1,11 @@
 $(document).ready(function(){
   $('#searchInput-favorite').on('keyup', function(){
       var query = $(this).val().toLowerCase().trim();
-      // 遍历每个收藏卡片
+      // Iterate through each collection card
       $('.favorite-item').each(function(){
-          // 获取卡片中所有文本内容
+          // Get all the text in the card
           var cardText = $(this).text().toLowerCase();
-          // 如果卡片文本中包含查询字符串，则显示整个卡片（及其外层链接），否则隐藏
+          // Show the entire card (and its outer links) if it contains the query string in the card text, otherwise hide it
           if(cardText.indexOf(query) !== -1){
               $(this).closest('a').show();
           } else {
@@ -20,9 +20,9 @@ $(document).ready(function(){
       var query = $(this).val().toLowerCase().trim();
       
       $(".review-card").each(function(){
-          // 获取整个卡片文本内容
+          // Get the entire card text content
           var text = $(this).text().toLowerCase();
-          // 如果包含查询关键字，显示卡片；否则隐藏
+          // If it contains the query keyword, show the card; otherwise hide it
           if(text.indexOf(query) !== -1){
               $(this).show();
           } else {
@@ -33,9 +33,9 @@ $(document).ready(function(){
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-  // 获取当前 URL 的 hash 值
+  // Get the hash value of the current URL
   var hash = window.location.hash;
-  // 如果 hash 值为 #list-settings，则自动激活该 tab
+  // If the hash value is #list-settings, then the tab is automatically activated
   if (hash === "#settings") {
     var triggerEl = document.getElementById('list-settings-list');
     if (triggerEl) {
@@ -49,9 +49,9 @@ $(document).ready(function(){
   var csrftoken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
   $('.delete-icon').on('click', function(event){
-      // 阻止事件冒泡到父级链接
+      // Prevent events from bubbling up to the parent link
       event.stopPropagation();
-      // 阻止默认行为（例如阻止链接跳转）
+      // Blocking default behavior (e.g., blocking link jumps)
       event.preventDefault();
       var $card = $(this).closest('.favorite-item');
       var category = $card.data('category');
@@ -69,7 +69,7 @@ $(document).ready(function(){
           headers: { "X-CSRFToken": csrftoken },
           success: function(response) {
             if(response.success) {
-              // 更新数量：找到对应类别的计数 <span>
+              // Update quantity: find the count for the corresponding category <span>
               var $countSpan = $('#count-' + category);
               var currentCount = parseInt($countSpan.text(), 10);
               if (!isNaN(currentCount) && currentCount > 0) {
@@ -79,31 +79,31 @@ $(document).ready(function(){
                   $(this).remove();
               });
             } else {
-                alert("删除失败: " + response.message);
+                alert("delete fail: " + response.message);
             }
           },
           error: function(xhr, status, error) {
-              alert("请求出错: " + error);
+              alert("error: " + error);
           }
       });
   });
 });
 
 $(document).ready(function(){
-  // 为每个切换按钮绑定事件
+  // Bind events to each toggle button
   $('.toggle-delete-btn').on('click', function(){
-      // 找到当前类别，通过按钮的 id 提取类别（例如：toggle-delete-book -> book）
+      // Find the current category and extract the category by the id of the button.
       var btnId = $(this).attr('id'); // "toggle-delete-book"
-      // 也可以通过 data 属性存储类别，简单示例直接从 id 中取出
+      
       var category = btnId.replace("toggle-delete-", "");
       
-      // 切换当前类别所有删除按钮的显示隐藏
+      // Toggles the show-hide of all delete buttons for the current category
       $('.favorite-item[data-category="' + category + '"] .delete-icon').toggleClass('d-none');
 
-      // 根据删除按钮是否显示来禁用或启用链接
+      // Disable or enable links based on whether or not the delete button is displayed
       $('.favorite-item[data-category="' + category + '"]').each(function(){
         var $link = $(this).closest('a');
-        // 如果当前收藏项中至少有一个删除按钮不隐藏，则禁用链接
+        // Disable links if at least one of the delete buttons in the current favorite item is not hidden
         if ($(this).find('.delete-icon').hasClass('d-none')) {
             $link.removeClass('disabled-link');
         } else {
@@ -115,16 +115,16 @@ $(document).ready(function(){
 
 $(document).ready(function(){
   var csrftoken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-  // 切换删除按钮显示/隐藏
+  // Toggle delete button show/hide
   window.toggleDelete = function(reviewId) {
       var $card = $('#review-' + reviewId);
       var $deleteBtn = $card.find('.delete-btn');
       $deleteBtn.toggleClass('d-none');
   };
 
-  // 删除评论，并移除卡片
+  // Delete comments and remove cards
   window.deleteReview = function(reviewId) {
-      // 此处替换为你的删除评论接口 URL
+      
       $.ajax({
           url: "delete_review/",
           type: "POST",
@@ -136,7 +136,7 @@ $(document).ready(function(){
               if(response.success) {
                   $('#review-' + reviewId).fadeOut(function(){
                       $(this).remove();
-                      // 更新评论总数
+                      // Update the total number of comments
                       var $countSpan = $('#review-count');
                       var currentCount = parseInt($countSpan.text(), 10);
                       if (!isNaN(currentCount) && currentCount > 0) {
@@ -144,15 +144,16 @@ $(document).ready(function(){
                       }
                   });
               } else {
-                  alert("删除失败: " + response.message);
+                  alert("delete fail: " + response.message);
               }
           },
           error: function(xhr, status, error) {
-              alert("请求出错: " + error);
+              alert("error: " + error);
           }
       });
   };
 });
+
 
 function followUser(targetUserId) {
     var csrftoken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -170,7 +171,7 @@ function followUser(targetUserId) {
                 } else {
                 $('#follow-btn').removeClass('btn-success').addClass('btn-outline-primary').text("Follow");
                 }
-                // 更新关注和粉丝数量
+                // Update the number of followers and fans
                 $('#follower-count').html('<strong>' + response.user_follower_num + '</strong> Follower');
             } else {
                 alert("Operation failed: " + response.message);

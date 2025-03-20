@@ -1,8 +1,10 @@
+/*This is a css file which can control the base page*/
+
 .navbar{
-    background-color: rgba(0, 0, 0, 0) !important; /* 设置透明背景颜色 */
-    background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.0)); /* 渐变效果 */
+    background-color: rgba(0, 0, 0, 0) !important; 
+    background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.0)); 
     border-bottom: none;
-    width: 100%; /* 宽度 100% */
+    width: 100%; 
     height: 80px;
     font-size: 18px;
     transition: height 0.5s ease, font-size 0.1s ease;
@@ -10,37 +12,37 @@
   }
   .navbar.heightDecrease {
     font-size: 16px;
-    height: 55px; /* 滚动后高度 */
+    height: 55px; 
   }
   .navbar.interWithCardContainer{
-    background-color: rgba(255, 255, 255, 1.0) !important; /* 设置透明背景颜色 */
+    background-color: rgba(255, 255, 255, 1.0) !important; 
     background: none;
     border-bottom:  2px solid #000;
   }
   .navbar-toggler-icon {
-    background-color: rgb(255, 255, 255); /* 将背景颜色设置为白色 */
+    background-color: rgb(255, 255, 255); 
   }
   .nav-icon {
-    width: 120px !important; /* 设置图标的宽度 */
-    vertical-align: middle; /* 使图标与文本垂直居中对齐 */
+    width: 120px !important; 
+    vertical-align: middle; /* Center the icon vertically with the text. */
     margin-right: 700px;
     pointer-events: auto;
   }
   .nav-item{
     pointer-events: auto;
   }
-  /* 为导航链接添加过渡效果，避免出现突兀的变化 */
+  /* Add transition effects to navigation links to avoid abrupt changes */
   .navbar-nav .nav-link {
     color: #ffffff;
     margin: 5px;
     transition: all 0.5s ease;
   }
   
-  /* 鼠标悬停时添加边框和背景色 */
+  /* Add border and background color on mouse hover. */
   .navbar-nav .nav-link:hover {
-    border: 0px solid #fff;  /* 可以调整颜色，例如白色 */
-    border-radius: 10px;        /* 可选，设置圆角效果 */
-    background-color: rgba(255, 255, 255, 0.13);  /* 可选，添加半透明背景 */
+    border: 0px solid #fff;  
+    border-radius: 10px;        
+    background-color: rgba(255, 255, 255, 0.13);  
   }
   .footer a {
     text-decoration: none;

@@ -1,10 +1,14 @@
+/*This is a css file which can control the profile page*/
+
+/*Setting the body background*/
 body{
     background-image: url("../images/profile.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    position: relative; /* 让伪元素相对于 body 定位 */
+    position: relative; /* Position the pseudo-element relative to the body */
   }
+
 .user-info-offset {
     height: 400px;
     background: linear-gradient(135deg, #d46728 0%, #51aca0 100%);
@@ -24,10 +28,10 @@ body{
     margin-right: 300px;
     margin-bottom: 30px;
     height: 200px;
-    background-color: rgba(255, 255, 255, 0.075); /* 白色背景，80% 不透明 */
+    background-color: rgba(255, 255, 255, 0.075); 
     border-radius: 30px;
     display: -webkit-box;
-    -webkit-line-clamp: 4;      /* 限制显示3行，根据需要调整 */
+    -webkit-line-clamp: 4;      /* Limit display to 3 lines */
     -webkit-box-orient: vertical;
     overflow: hidden;
     width: 700px;
@@ -36,28 +40,28 @@ body{
 .right-content {
     margin-top: 65px;
 }
-/* 左侧列表选中状态 */
+/* Left list selected state */
 .list-group-item.active {
     background-color: #c86c02;
     border-color: #0266C8;
 }
-/* 整体卡片的背景或阴影 */
+/* Overall card background or shading */
 .card {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-/* 左侧菜单字体颜色或其他 */
+
 .list-group-item {
     cursor: pointer;
 }
-/* Hover 效果 */
+
 .list-group-item:hover {
     background-color: #124e006c;
 }
-/* 表单标签对齐或其它微调 */
+
 .col-form-label {
     font-weight: 600;
 }
-/* 自定义按钮样式 */
+
 .btn-success {
     background-color: #0284a8;
     border-color: #0284a8;
@@ -96,9 +100,9 @@ body{
 }
 .text-ellipsis {
     max-width: 80px;
-    white-space: nowrap;     /* 防止换行 */
-    overflow: hidden;        /* 隐藏超出部分 */
-    text-overflow: ellipsis; /* 显示省略号 */
+    white-space: nowrap;     
+    overflow: hidden;        
+    text-overflow: ellipsis; 
 }
 #searchInput-favorite {
     border-radius: 50px;
@@ -109,17 +113,17 @@ body{
     background-color: #00afa628;
 }
 .input-group-custom {
-    width: 50%;       /* 设置为 50% 宽度，你可以根据需要修改 */
-    width: 600px; /* 限制最大宽度 */
-    margin: 0 auto;   /* 水平居中 */
+    width: 50%;       
+    width: 600px; 
+    margin: 0 auto;   
 }
 .favorites-category {
-    max-height: 300px;  /* 根据需要调整最大高度 */
-    overflow-y: auto;   /* 超出高度时显示垂直滚动条 */
+    max-height: 300px;  
+    overflow-y: auto;   /* Vertical scroll bar when height is exceeded */
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
 }
-/* 默认隐藏滚动条 */
+/* Hide scrollbars by default */
 .favorites-category::-webkit-scrollbar {
     width: 8px;
 }
@@ -127,7 +131,7 @@ body{
     background-color: transparent;
     border-radius: 10px;
 }
-/* 鼠标悬停时显示滚动条 */
+/* Show scrollbar on mouse hover */
 /* Firefox */
 .favorites-category:hover {
 scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
@@ -137,17 +141,17 @@ scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
 background-color: rgba(0, 0, 0, 0.5);
 }
 .fixed-poster {
-    width: 120px;   /* 设置固定宽度 */
-    height: 200px;  /* 设置固定高度 */
+    width: 120px;   
+    height: 200px;  
     object-fit: fill;
     border-radius: 10px;
 }
 .truncate-3 {
     display: -webkit-box;
-    -webkit-line-clamp: 4;       /* 限制3行 */
+    -webkit-line-clamp: 4;       
     -webkit-box-orient: vertical;
     overflow: hidden;
-    max-height: 6.0em;           /* 3行 * 1.5em */
+    max-height: 6.0em;           
 }
 .delete-icon{
     width: 30px;
@@ -157,9 +161,9 @@ background-color: rgba(0, 0, 0, 0.5);
 }
 .disabled-link {
     pointer-events: none;
-    cursor: default; /* 可选，改变鼠标样式 */
+    cursor: default; 
 }
-/* 确保在禁用父链接时，删除按钮仍然可点击 */
+
 .disabled-link .delete-icon {
     pointer-events: auto !important;
     z-index: 9999;
@@ -175,13 +179,13 @@ background-color: rgba(0, 0, 0, 0.5);
     right: 5px;
 }
 .scrollable-reviews {
-    max-height: 1200px; /* 根据需要调整高度 */
-    overflow-y: auto;  /* 当内容超出高度时，显示垂直滚动条 */
+    max-height: 1200px; 
+    overflow-y: auto;  /* Show vertical scrollbar when content exceeds height */
     overflow-x: hidden; 
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
 }
-/* 默认隐藏滚动条 */
+/* Hide scrollbars by default */
 .scrollable-reviews::-webkit-scrollbar {
     width: 8px;
 }
@@ -189,7 +193,7 @@ background-color: rgba(0, 0, 0, 0.5);
     background-color: transparent;
     border-radius: 10px;
 }
-/* 鼠标悬停时显示滚动条 */
+/* Show scrollbar on mouse hover */
 /* Firefox */
 .scrollable-reviews:hover {
 scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
