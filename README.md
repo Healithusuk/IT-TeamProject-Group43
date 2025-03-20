@@ -50,8 +50,8 @@ We use a mysql database on DigitalOcean server. It is somehow **unavailable for 
 
 # Access Control
 
-We have set up an access control that prevents users from accessing pages that should only be browsed by users in other groups.
+We have two types of accounts, one account is an administrator account with permissions to manage the backend by accessing the backend page via the avatar drop down box. 
 
-Given this, you need to login as users in different groups to browse all our webpages.
+The other account is a regular account that does not have access to the backend administration page.
 
 A group of usernames and passwords of test users are provided for you in the text file **"username_passwords_for_test.txt"**
