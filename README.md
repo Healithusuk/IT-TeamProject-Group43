@@ -38,20 +38,20 @@ email_details={
 
 In order for our project to be executed and graded properly, we'll add secrets.py to the upload file. It will be in the directory ***Nifty/Nifty/***
 
-If you are using completely different settings on db, map api, or email, you can remove the call to secrets.py in settings.py and add your own settings.
+If you are using completely different settings on db, or email, you can remove the call to secrets.py in settings.py and add your own settings.
 
-For example, we once changed the email backend to "django.core.mail.backends.console.EmailBackend" to print the email content directly to console for testing purpose.
+
 # Database Connection Warning
 
-We use a mysql database on DigitalOcean server. It is somehow **unavailable for on-campus network connection.** The solutions are:
+We use a MySQL database on the DigitalOcean server. It is somehow **unavailable for on-campus network connection.** The solutions are:
 
-1. Run the proj from outside the campus, or
+1. Run the project from outside the campus, or
 2. Use a hot spot if you have to run it on campus
 
 # Access Control
 
-We have two types of accounts, one account is an administrator account with permissions to manage the backend by accessing the backend page via the avatar drop down box. 
+We have two types of accounts, one account is an administrator account with permissions to manage the backend by accessing the backend page via the avatar drop-down box. 
 
 The other account is a regular account that does not have access to the backend administration page.
 
-A group of usernames and passwords of test users are provided for you in the text file **"username_passwords_for_test.txt"**
+Regular accounts can register on the site, and we provide an administrator account in the file **username_password_for_admin** for testing.
